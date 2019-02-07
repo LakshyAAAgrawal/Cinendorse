@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}Cinendorse!!{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style>
+  div.stars{
+      display: inline-block;
+      weight:1px;
+  }
+  </style>
+{% endblock %}
+{% block content %}
+<form action="{{ url_for('ratings') }}" method = "post">
+    <table border = 2>
+        <tr>
+            <th>Cover</th>
+            <th>Movie</th>
+            <th>Synopsis</th>
+            <th>Rating</th>
+        </tr>
+       {% for movie in random_movies %}
+          <tr>
+                <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
+                <td>{{movie.title}}</td>
+                <td>{{movie.synpsis}}</td>
+                <td>
+                    <div class="stars">
+                        <input value=1 type="radio" name="{{movie.id}}"/>
+                        <input value=2 type="radio" name="{{movie.id}}"/>
+
+                        <input value=3 type="radio" name="{{movie.id}}"/>
+
+                        <input value=4 type="radio" name="{{movie.id}}"/>
+                        <input value=5 type="radio" name="{{movie.id}}"/>
+                    </div>
+                </td>
+          </tr>
+       {% endfor %}
+       <tr><td colspan="4"><center><input type="submit" value="Submit" /></center></td></tr>
+    </table>
+</form>
+
+<table border = 2>
+    <tr>
+        <th>Cover</th>
+        <th>Movie</th>
+        <th>Synopsis</th>
+    </tr>
+   {% for movie in result %}
+      <tr>
+            <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
+            <td>{{movie.title}}</td>
+            <td>{{movie.synpsis}}</td>
+      </tr>
+   {% endfor %}
+</table>
+{% endblock %}

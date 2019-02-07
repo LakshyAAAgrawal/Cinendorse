@@ -12,8 +12,20 @@ def login():
     if request.method == 'POST':
       result = request.form
       recomm=recommendations_user(10, result['username'])
-
+      to_pass=recom_parse(recomm)
+      rand_mov=random_movies(10)
       if(recomm==None):
           return('No such user')
       else:
-          return(str(recom_parse(recomm)))
+          return render_template('recom_display.html', result=to_pass, random_movies=rand_mov)
+    else:
+        return('Not Supported')
+
+
+@app.route('/ratings', methods = ['POST', 'GET'])
+def ratings():
+    if request.method == 'POST':
+      result = request.form
+      return(str(result))
+    else:
+        return('Not Supported')

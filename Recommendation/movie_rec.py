@@ -193,7 +193,37 @@ def recom_parse(lis):
     global users, movies, ratings
     to_ret=[]
     for i in lis:
-        to_ret.append(movies.find({'_id':i[1]})[0])
+        dict=movies.find({'_id':i[1]})[0]
+        to_add={'title':dict['title'], \
+                'year_of_release':dict['year_of_release'], \
+                'license':dict['license'], \
+                'runtime':dict['runtime'], \
+                'genres':dict['genres'], \
+                'synpsis':dict['synpsis'], \
+                'directors':dict['directors'], \
+                'cast': dict['cast'],\
+                'thumbnail_url':dict['thumbnail_url'] \
+            }
+        to_ret.append(to_add)
+    return(to_ret)
+
+def random_movies(n):
+    to_ret=[]
+    for i in range(n):
+        movie_obj=movies.find().skip(randint(0,4999)).next()
+        to_add={'id':movie_obj['_id'],
+                'title':movie_obj['title'], \
+                'genres':movie_obj['genres'], \
+                'synpsis':movie_obj['synpsis'], \
+                'directors':movie_obj['directors'], \
+                'cast': movie_obj['cast'],\
+                'thumbnail_url':movie_obj['thumbnail_url'] \
+            }
+        if to_add in to_ret:
+            None
+        else:
+            to_ret.append(to_add)
+
     return(to_ret)
 #recommendation_list=recommendations(5,users.find().skip(randint(2,10)).next()['_id'])
 #print(recommendation_list)
