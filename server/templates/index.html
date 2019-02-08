@@ -2,11 +2,27 @@
 {% block title %}Cinendorse!!{% endblock %}
 {% block head %}
   {{ super() }}
+  <style media="screen">
+      #username{
+          display:inline-block;
+      }
+  </style>
 {% endblock %}
 {% block content %}
     <form action = "{{ url_for('login') }}" method = "post">
-     <p>Enter Name:</p>
-     <p><input type = "text" name = "username" /></p>
-     <p><input type = "submit" value = "submit" /></p>
+        <div id="username">
+            <table>
+                <tr>
+                    <td>
+                <p>Enter Name:</p>
+                </td>
+                <td>
+                <p><input type = "text" name = "username" /></p>
+                </td>
+                <tr><td></td><td colspan="3"
+                <center><p><input type = "submit" value = "submit" /></p></center></td>
+                </tr>
+            </table>
+        </div>
     </form>
 {% endblock %}

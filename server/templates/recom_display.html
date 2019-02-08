@@ -2,15 +2,15 @@
 {% block title %}Cinendorse!!{% endblock %}
 {% block head %}
   {{ super() }}
-  <style>
-  div.stars{
-      display: inline-block;
-      weight:1px;
-  }
-  </style>
+
 {% endblock %}
 {% block content %}
+<div align="right">
+ <a href="{{ url_for('index')}}">Sign Out</a>
+</div>
+<center><h2>Rate Movies</h2></center>
 <form action="{{ url_for('ratings') }}" method = "post">
+    <input name="username" value={{username}} type="hidden" />
     <table border = 2>
         <tr>
             <th>Cover</th>
@@ -24,14 +24,19 @@
                 <td>{{movie.title}}</td>
                 <td>{{movie.synpsis}}</td>
                 <td>
-                    <div class="stars">
-                        <input value=1 type="radio" name="{{movie.id}}"/>
-                        <input value=2 type="radio" name="{{movie.id}}"/>
-
-                        <input value=3 type="radio" name="{{movie.id}}"/>
-
-                        <input value=4 type="radio" name="{{movie.id}}"/>
-                        <input value=5 type="radio" name="{{movie.id}}"/>
+                    <div class="ratings">
+                        <select name="{{movie.id}}" selected="0">
+                            <option value="Null" name="{{movie.id}}" selected="selected">Rate</option>
+                            <option value="1" name="{{movie.id}}">1</option>
+                            <option value="1.5" name="{{movie.id}}">1.5</option>
+                            <option value="2" name="{{movie.id}}">2</option>
+                            <option value="2.5" name="{{movie.id}}">2.5</option>
+                            <option value="3" name="{{movie.id}}">3</option>
+                            <option value="3.5" name="{{movie.id}}">3.5</option>
+                            <option value="4" name="{{movie.id}}">4</option>
+                            <option value="4.5" name="{{movie.id}}">4.5</option>
+                            <option value="5" name="{{movie.id}}">5</option>
+                        </select>
                     </div>
                 </td>
           </tr>
@@ -39,7 +44,7 @@
        <tr><td colspan="4"><center><input type="submit" value="Submit" /></center></td></tr>
     </table>
 </form>
-
+<center><h2>Your recommendations</h2></center>
 <table border = 2>
     <tr>
         <th>Cover</th>
