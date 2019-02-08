@@ -9,6 +9,7 @@
  <a href="{{ url_for('index')}}">Sign Out</a>
 </div>
 <center><h2>Rate Movies</h2></center>
+Please rate the movies that you have watched, and leave the rest. Clicking submit will submit the ratings and generate a new list of movies.
 <form action="{{ url_for('ratings') }}" method = "post">
     <input name="username" value={{username}} type="hidden" />
     <table border = 2>
@@ -45,6 +46,7 @@
     </table>
 </form>
 <center><h2>Your recommendations</h2></center>
+Here you can see recommended movies, once you have rated enough movies for the systems to generate recommendations. Cheers!
 <table border = 2>
     <tr>
         <th>Cover</th>
