@@ -147,7 +147,7 @@ def recommendations_user(n, username):
     users_to_consider=[]
     movies_to_consider=[]
     for user_2 in similarity_dict:
-        if similarity_dict[user_2]>0:
+        if similarity_dict[user_2]>-0.5:
             users_to_consider.append(user_2)
             for rating in ratings.find({'user_id':users.find_one({'username':user_2})['_id']}):
                 if not ([None, rating['movie_id']] in movies_to_consider):
@@ -155,37 +155,24 @@ def recommendations_user(n, username):
     to_ret=[]
     for movie_ls in movies_to_consider:
         i=0
-
-
         movie_id=movie_ls[1]
-
-
         all_ratings=ratings.find({'movie_id':movie_id})
-
-
         mean=user_a['mean_rating']
         bias=0
         sum_weights=0
         for user in users_to_consider:
-
-
             similarity=similarity_dict[user]
-
-
             sum_weights=sum_weights+similarity
-
-
             user_obj=users.find_one({'username':user})
-
-
             try:
-
-
                 bias=bias+similarity*(ratings.find_one({'user_id':user_obj['_id'], 'movie_id':movie_id})['rating']-user_obj['mean_rating'])
             except:
                 None
-        #movie_ls[0]=bias/sum_weights + mean
-        to_ret.append([bias/sum_weights + mean, movie_ls[1]])
+        if sum_weights==0:
+            exp_rating=mean
+        else:
+            exp_rating=bias/sum_weights + mean
+        to_ret.append([exp_rating, movie_ls[1]])
     to_ret.sort(reverse=True)
     return(to_ret[:n])
 

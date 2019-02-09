@@ -15,18 +15,18 @@ Please rate the movies that you have watched, and leave the rest. Clicking submi
 {% endif %}
 <form action="{{ url_for('ratings') }}" method = "post">
     <input name="username" value={{username}} type="hidden" />
-    <table border = 2>
+    <table border = 0>
         <tr>
-            <th>Cover</th>
-            <th>Movie</th>
-            <th>Synopsis</th>
-            <th>Rating</th>
+            <th><center>Cover</center></th>
+            <th><center>Movie</center></th>
+            <th><center>Synopsis</center></th>
+            <th><center>Rating</center></th>
         </tr>
        {% for movie in random_movies %}
           <tr>
                 <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
-                <td>{{movie.title}}</td>
-                <td>{{movie.synpsis}}</td>
+                <td><center>{{movie.title}}</center></td>
+                <td><center>{{movie.synpsis}}</center></td>
                 <td>
                     <div class="ratings">
                         <select name="{{movie.id}}" selected="0">
@@ -50,7 +50,7 @@ Please rate the movies that you have watched, and leave the rest. Clicking submi
 </form>
 <center><h2>Your recommendations</h2></center>
 Here you can see recommended movies, once you have rated enough movies for the systems to generate recommendations. Cheers!
-<table border = 2>
+<table border = 0>
     <tr>
         <th>Cover</th>
         <th>Movie</th>
