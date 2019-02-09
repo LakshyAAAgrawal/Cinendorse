@@ -14,7 +14,7 @@ def login():
       try:
           recomm=username_process(result['username'])
       except:
-          return(redirect('/'))
+          return(render_template("index.html", error="Special Characters in username not allowed"))
       else:
           to_pass=recom_parse(recomm)
           rand_mov=random_movies(10)

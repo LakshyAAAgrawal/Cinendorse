@@ -25,4 +25,7 @@
             </table>
         </div>
     </form>
+    {% if error %}
+        <center><p><font color="red">{{error}}</font></p></center>
+    {% endif %}
 {% endblock %}
