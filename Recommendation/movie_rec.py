@@ -5,11 +5,13 @@ import pandas as pd
 import numpy as np
 from random import randint
 from string import ascii_letters
+#import Recommendation.u2_collab
+import Recommendation.matrix_factorisation
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
-#client=MongoClient()
-client=MongoClient('mongodb://admin:mLabAdmin1000@ds227255.mlab.com:27255/deploy_1')
-db=client['deploy_1']
+client=MongoClient()
+#client=MongoClient('mongodb://admin:mLabAdmin1000@ds227255.mlab.com:27255/deploy_1')
+db=client['try']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
@@ -152,7 +154,7 @@ def update_similarity_users(user_id):
             users.find_one_and_update({'_id': user_id}, {'$set': {'similarity.'+user['username']: float(cosine)}}, upsert=True)
     return(ndf, df)
 
-def recommendations_user(n, user_id):
+def u2_collab(n, user_id):
     global users, movies, ratings
     user_a=users.find_one({'_id':user_id})
     try:
@@ -242,9 +244,17 @@ def process_ratings(form_input):
                 no_of_ratings=no_of_ratings+1
     return(no_of_ratings)
 
+def recommendations(user_id):
+    l1=u2_collab(10, user_id)
+    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
+    l1.extend(l2)
+    l1.sort(reverse=True)
+    return(l1)
+
 def username_process(username):
     if users.find({'username':username}).count()>0:
         user_id=users.find({'username':username})[0]['_id']
     else:
         user_id=add_user(username)
-    return(recommendations_user(10, user_id))
+    #return(Recommendation.matrix_factorisation.recommend_user(10, user_id))
+    return(user_id)
