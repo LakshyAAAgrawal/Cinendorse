@@ -14,9 +14,7 @@ def login():
       try:
           recomm=username_process(result['username'])
       except:
-          print("error")
-          pass
-          #return(redirect('/'))
+          return(redirect('/'))
       else:
           to_pass=recom_parse(recomm)
           rand_mov=random_movies(10)
@@ -34,8 +32,7 @@ def ratings():
       try:
           recomm=username_process(result['username'])
       except:
-          pass
-          #return(redirect('/'))
+          return(render_template("index.html"))
       else:
           to_pass=recom_parse(recomm)
           return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username']))

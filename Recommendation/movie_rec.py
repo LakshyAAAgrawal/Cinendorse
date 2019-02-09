@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 import pandas as pd
 import numpy as np
 from random import randint
+from string import ascii_letters
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
 #client=MongoClient()
@@ -21,6 +22,10 @@ def norm(v):
 
 def add_user(username):
     global users
+    if username=='' or ('.' in username):
+        raise Exception()
+    if  not all(c in ascii_letters+'0123456789' for c in username):
+        raise Exception()
     user_dict={'username':username, 'similarity':{}}
     try:
         user_id=users.insert_one(user_dict).inserted_id
