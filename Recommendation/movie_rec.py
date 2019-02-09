@@ -230,6 +230,7 @@ def process_ratings(form_input):
     #print(form_input['username'])
     user_id=users.find({'username':form_input['username']})[0]['_id']
     #print(user_id)
+    no_of_ratings=0
     for rating in form_input:
         if(rating=='username'):
             None
@@ -238,6 +239,8 @@ def process_ratings(form_input):
                 None
             else:
                 add_rating(ObjectId(rating), user_id, float(form_input[rating]))
+                no_of_ratings=no_of_ratings+1
+    return(no_of_ratings)
 
 def username_process(username):
     if users.find({'username':username}).count()>0:

@@ -10,6 +10,9 @@
 </div>
 <center><h2>Rate Movies</h2></center>
 Please rate the movies that you have watched, and leave the rest. Clicking submit will submit the ratings and generate a new list of movies.
+{% if msg_success %}
+     <p><font color="green">{{msg_success}}</font></p>
+{% endif %}
 <form action="{{ url_for('ratings') }}" method = "post">
     <input name="username" value={{username}} type="hidden" />
     <table border = 2>

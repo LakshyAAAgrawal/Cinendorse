@@ -35,6 +35,6 @@ def ratings():
           return(render_template("index.html"))
       else:
           to_pass=recom_parse(recomm)
-          return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username']))
+          return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username'], msg_success="Submitted "+str(processed) +" ratings"))
     else:
         return('Not Supported')
