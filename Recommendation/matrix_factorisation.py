@@ -6,8 +6,8 @@ from bson.objectid import ObjectId
 import pickle
 from bson.binary import Binary
 
-client=MongoClient()
-db=client['try']
+client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
+db=client['deploy_2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
@@ -31,7 +31,8 @@ def matrix_factorisation(matrix, no_of_users, no_of_movies, rating_indices):
             q=q+alpha*to_change*p
     return(U, M)
 
-def update_exp_ratings_factorisation():
+#def update_exp_ratings_factorisation():
+def rating_for(n, user_id):
     global users, movies, ratings, exp_ratings_factorisation
     movie_index_dict={}
     user_index_dict={}
@@ -51,14 +52,22 @@ def update_exp_ratings_factorisation():
         ratings_array[user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]]=rating['rating']
 
     U, M=matrix_factorisation(ratings_array, user_counter, movie_counter, rating_indices)
-    print('calculated')
-    i=0
+    p_user=U[user_index_dict[user_id]]
+    ratings_l=[]
+    for movie in movies.find():
+        q=M[movie_index_dict[movie['_id']]]
+        ratings_l.append([p_user.dot(q), movie['_id']])
+    ratings_l.sort(reverse=True)
+    return(ratings_l[:n])
+    '''
     for movie in movie_index_dict:
         movie_latent_vector.update({'movie_id':movie}, {'movie_id':movie, 'latent_vector':Binary(pickle.dumps(M[movie_index_dict[movie]]))}, upsert=True)
     for user in user_index_dict:
         user_latent_vector.update({'user_id':user}, {'user_id':user, 'latent_vector':Binary(pickle.dumps(U[user_index_dict[user]]))}, upsert=True)
+    '''
 
 def recommend_user(n, user_id):
+    '''
     global users, movies, ratings, exp_ratings_factorisation, movie_latent_vector, user_latent_vector
     ratings_l=[]
     try:
@@ -72,3 +81,5 @@ def recommend_user(n, user_id):
     ratings_l.sort(reverse=True)
     print(ratings_l)
     return(ratings_l[:n])
+    '''
+    return(rating_for(n, user_id))
