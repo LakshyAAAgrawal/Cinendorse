@@ -43,7 +43,6 @@ def train_model():
     if np_arrays.find({'name':'U'}).count()>0:
         U=pickle.loads(np_arrays.find({'name':'U'}).next()['matrix'])
         M=pickle.loads(np_arrays.find({'name':'M'}).next()['matrix'])
-        movie_index_dict={}
         user_counter=len(U)
         movie_counter=len(M)
         for movie in movies.find():
@@ -60,7 +59,7 @@ def train_model():
             except:
                 user_index_dict[user['_id']]=user_counter
                 users.update({'_id':user['_id']}, {'$set':{'matrix_index':user_counter}})
-                U=np.vstack([M, np.random.random([1,k])])
+                U=np.vstack([U, np.random.random([1,k])])
                 user_counter+=1
         ratings_array=np.empty((user_counter, movie_counter))
         ratings_array.fill(np.nan)
@@ -130,12 +129,12 @@ def rating_for(n, user_id):
 def rating_for(n, user_id):
     global users, movies, ratings, exp_ratings_factorisation
     if np_arrays.find({'name':'U'}).count()>0:
-        U=pickle.loads(np_arrays.find({'name':'U'}).next()['matrix'])
-        M=pickle.loads(np_arrays.find({'name':'M'}).next()['matrix'])
+        U=pickle.loads(np_arrays.find({'name':'U'})[0]['matrix'])
+        M=pickle.loads(np_arrays.find({'name':'M'})[0]['matrix'])
     else:
         train_model()
-        U=pickle.loads(np_arrays.find({'name':'U'}).next()['matrix'])
-        M=pickle.loads(np_arrays.find({'name':'M'}).next()['matrix'])
+        U=pickle.loads(np_arrays.find({'name':'U'})[0]['matrix'])
+        M=pickle.loads(np_arrays.find({'name':'M'})[0]['matrix'])
     p_user=U[users.find({'_id':user_id}).next()['matrix_index']]
     ratings_l=[]
     for movie in movies.find():
