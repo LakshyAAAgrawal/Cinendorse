@@ -18,8 +18,7 @@ def login():
       try:
           user_id=username_process(result['username'])
       except:
-          pass
-          #return(render_template("index.html", error="Special Characters in username not allowed"))
+          return(render_template("index.html", error="Special Characters in username not allowed"))
       else:
           recomm=recommendations(user_id)
           to_pass=recom_parse(recomm)
