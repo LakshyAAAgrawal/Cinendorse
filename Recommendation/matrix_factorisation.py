@@ -61,7 +61,7 @@ def train_model():
                 user_index_dict[user['_id']]=user_counter
                 users.update({'_id':user['_id']}, {'$set':{'matrix_index':user_counter}})
                 U=np.vstack([M, np.random.random([1,k])])
-                movie_counter+=1
+                user_counter+=1
         ratings_array=np.empty((user_counter, movie_counter))
         ratings_array.fill(np.nan)
         rating_indices=[]
