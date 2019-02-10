@@ -246,10 +246,10 @@ def process_ratings(form_input):
 
 def recommendations(user_id):
     l1=u2_collab(10, user_id)
-    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
-    l1.extend(l2)
-    l1.sort(reverse=True)
-    return(l1)
+    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)[:5]
+    l2.extend(l1[:5])
+    l2.sort(reverse=True)
+    return(l2)
 
 def username_process(username):
     if users.find({'username':username}).count()>0:
