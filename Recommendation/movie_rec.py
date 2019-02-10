@@ -6,12 +6,13 @@ import numpy as np
 from random import randint
 from string import ascii_letters
 #import Recommendation.u2_collab
+from Recommendation.matrix_factorisation import train_model
 import Recommendation.matrix_factorisation
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
-#client=MongoClient()
-client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
-db=client['deploy_2']
+client=MongoClient()
+#client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
+db=client['try2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
@@ -36,6 +37,7 @@ def add_user(username):
     #print(username, 'added as', user_id)
     update_ratings_average(user_id)
     update_similarity_users(user_id)
+    train_model()
     return(user_id)
 
 def add_rating(movie_id, user_id, rating):
@@ -246,7 +248,7 @@ def process_ratings(form_input):
 
 def recommendations(user_id):
     l1=u2_collab(10, user_id)
-    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)[:5]
+    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
     l2.extend(l1[:5])
     l2.sort(reverse=True)
     return(l2)
