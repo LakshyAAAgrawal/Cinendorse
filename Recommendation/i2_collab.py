@@ -10,9 +10,9 @@ from Recommendation.matrix_factorisation import train_model
 from random import randint
 from string import ascii_letters
 
-client=MongoClient()
-#client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
+#client=MongoClient()
 client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
+#client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
 db=client['deploy_2']
 #db=client['try2']
 movies=db['movies']
