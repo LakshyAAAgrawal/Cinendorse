@@ -6,6 +6,7 @@ import numpy as np
 from random import randint
 from string import ascii_letters
 import Recommendation.u2_collab
+import datetime
 
 from Recommendation.matrix_factorisation import train_model
 import Recommendation.matrix_factorisation
@@ -15,7 +16,7 @@ from Recommendation.i2_collab import recommendations_for
 # import matrix_factorisation
 
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
-#client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
+# client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
 # client=MongoClient()
 client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
 db=client['deploy_2']
@@ -239,12 +240,18 @@ def process_ratings(form_input):
     return(no_of_ratings)
 
 def recommendations(user_id):
+    print('10', datetime.datetime.now().minute, datetime.datetime.now().second)
     l1=u2_collab(10, user_id)
+    print('11', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
+    print('12', datetime.datetime.now().minute, datetime.datetime.now().second)
     l3=recommendations_for(10, user_id)
+    print('13', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2.extend(l1[:10])
     l2.extend(l3[:10])
+    print('14', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2.sort(reverse=True)
+    print('15', datetime.datetime.now().minute, datetime.datetime.now().second)
     return(l2)
 
 def username_process(username):
