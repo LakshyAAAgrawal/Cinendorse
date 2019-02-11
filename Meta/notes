@@ -5,3 +5,12 @@ changes:
 implement i2_collab
 add the year into the movie info
 convert the list into a grid rather
+use gradient descent to find the weights of each type of rating
+improve the movies for which ratings asked - not show for which ratings already given
+do not recommend movies for which ratings given
+
+
+
+does philosophy concern itself with the resource divide
+how do we define the cognitive limits
+Imperfection is part of the human nature..

@@ -5,14 +5,20 @@ import pandas as pd
 import numpy as np
 from random import randint
 from string import ascii_letters
-#import Recommendation.u2_collab
+import Recommendation.u2_collab
+
 from Recommendation.matrix_factorisation import train_model
 import Recommendation.matrix_factorisation
+from Recommendation.i2_collab import recommendations_for
+
+# from matrix_factorisation import train_model
+# import matrix_factorisation
+
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
-#client=MongoClient()
-client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
-db=client['deploy_2']
+client=MongoClient()
+#client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
+db=client['try2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
@@ -71,48 +77,6 @@ def update_ratings_movies(movie_id):
         sum=sum+rating['rating']
     mean=sum/ratings.find({'movie_id':movie_id}).count()
     movies.find_one_and_update({'_id': movie_id}, {'$set': {'mean_rating': mean}})
-
-
-def update_similarity_movies(movie_id):
-    global users, movies, ratings
-    movie_cursor=movies.find()
-    data_dict={}
-    # for  in movies.find():
-    #     data_dict[movie['_id']]={}
-    # for rating in ratings.find():
-    #     data_dict[rating['movie_id']][rating['user_id']]=rating['rating']
-    # #print(data_dict)
-    # df=pd.DataFrame(data_dict)
-    # print(df.mean(axis=1))
-    # df.to_csv('before.csv')
-    # ndf=df.sub(df.mean(axis=1), axis=0)
-    for movie in movies.find():
-        data_dict[movie['_id']]={}
-    for rating in ratings.find():
-        data_dict[rating['movie_id']][rating['user_id']]=rating['rating']
-    df=pd.DataFrame(data_dict)
-    ndf=df.sub(df.mean(axis=0), axis=1)
-    #might want to divide by standard deviation here!
-    ndf=ndf.fillna(0)
-    #print(ndf)
-    movie_1=ndf[movie_id].values
-    for movie in movies.find():
-        if movie['_id']==movie_id:
-            None
-        else:
-            movie_2=ndf[movie['_id']].values
-            dot_product=movie_1.dot(movie_2)
-            #print('dot_product', dot_product)
-            norm_1=norm(movie_1)
-            norm_2=norm(movie_2)
-            if norm_1==0 or norm_2==0:
-                cosine=0
-            else:
-                cosine=dot_product/((norm_1)*(norm_2))
-            #print('similarity between', movies.find({'_id':movie_id})[0]['title'], movie['title'], cosine)
-            movies.find_one_and_update({'_id': movie['_id']}, {'$set': {'similarity.'+movies.find_one({'_id':movie_id})['title']: float(cosine)}})
-            #print(user['username'])
-            movies.find_one_and_update({'_id': movie_id}, {'$set': {'similarity.'+str(movie['_id']): float(cosine)}})
 
 def update_similarity_users(user_id):
     global users, movies, ratings
@@ -249,7 +213,9 @@ def process_ratings(form_input):
 def recommendations(user_id):
     l1=u2_collab(10, user_id)
     l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
-    l2.extend(l1[:5])
+    #l3=recommendations_for(10, user_id)
+    l2.extend(l1[:10])
+    #l2.extend(l3[:10])
     l2.sort(reverse=True)
     return(l2)
 

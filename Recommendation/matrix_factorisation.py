@@ -6,9 +6,9 @@ from bson.objectid import ObjectId
 import pickle
 from bson.binary import Binary
 
-#client=MongoClient()
-client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
-db=client['deploy_2']
+client=MongoClient()
+#client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
+db=client['try2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
@@ -51,7 +51,7 @@ def train_model():
             except:
                 movie_index_dict[movie['_id']]=movie_counter
                 movies.update({'_id':movie['_id']}, {'$set':{'matrix_index':movie_counter}})
-                M=np.vstack([M, np.random.random([1,k])])
+                M=np.vstack([M, np.random.normal(0,1,[1,k])])
                 movie_counter+=1
         for user in users.find():
             try:
@@ -59,7 +59,7 @@ def train_model():
             except:
                 user_index_dict[user['_id']]=user_counter
                 users.update({'_id':user['_id']}, {'$set':{'matrix_index':user_counter}})
-                U=np.vstack([U, np.random.random([1,k])])
+                U=np.vstack([U, np.random.normal(0,1,[1,k])])
                 user_counter+=1
         ratings_array=np.empty((user_counter, movie_counter))
         ratings_array.fill(np.nan)
