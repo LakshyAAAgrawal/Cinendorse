@@ -16,9 +16,10 @@ from Recommendation.i2_collab import recommendations_for
 
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
-#client=MongoClient()
+# client=MongoClient()
 client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
 db=client['deploy_2']
+# db=client['try2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
@@ -176,10 +177,20 @@ def recom_parse(lis):
         to_ret.append(to_add)
     return(to_ret)
 
-def random_movies(n):
+def rand_movies_for_rating(n, user_id):
+    l=[]
+
+    a=ratings.find({'user_id':{'$ne':user_id}})
+    for i in range(n//2):
+        l.append(a[randint(0,a.count()-1)]['movie_id'])
+    return(l)
+
+def random_movies(n, username):
     to_ret=[]
-    for i in range(n):
-        movie_obj=movies.find().skip(randint(0,4999)).next()
+    user=users.find_one({'username':username})
+    lis=rand_movies_for_rating(n, user['_id'])
+    for l in lis:
+        movie_obj=movies.find({'_id':l})[0]
         to_add={'id':movie_obj['_id'],
                 'title':movie_obj['title'], \
                 'genres':movie_obj['genres'], \
@@ -192,6 +203,23 @@ def random_movies(n):
             None
         else:
             to_ret.append(to_add)
+    for i in range(n//2):
+        movie_obj=movies.find({}).skip(randint(0,4999)).next()
+        if ratings.find({'movie_id':movie_obj['_id'], 'user_id':user['_id']}).count()>0:
+            None
+        else:
+            to_add={'id':movie_obj['_id'],
+                    'title':movie_obj['title'], \
+                    'genres':movie_obj['genres'], \
+                    'synpsis':movie_obj['synpsis'], \
+                    'directors':movie_obj['directors'], \
+                    'cast': movie_obj['cast'],\
+                    'thumbnail_url':movie_obj['thumbnail_url'] \
+                }
+            if to_add in to_ret:
+                None
+            else:
+                to_ret.append(to_add)
     return(to_ret)
 
 def process_ratings(form_input):

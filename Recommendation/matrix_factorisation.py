@@ -6,9 +6,10 @@ from bson.objectid import ObjectId
 import pickle
 from bson.binary import Binary
 
-#client=MongoClient()
+# client=MongoClient()
 client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
 db=client['deploy_2']
+# db=client['try2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']

@@ -2,66 +2,84 @@
 {% block title %}Cinendorse!!{% endblock %}
 {% block head %}
   {{ super() }}
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 {% endblock %}
 {% block content %}
 <div align="right">
  <a href="{{ url_for('index')}}">Sign Out</a>
 </div>
-<center><h2>Rate Movies</h2></center>
-Please rate the movies that you have watched, and leave the rest. Clicking submit will submit the ratings and generate a new list of movies.
-{% if msg_success %}
-     <p><font color="green">{{msg_success}}</font></p>
-{% endif %}
-<form action="{{ url_for('ratings') }}" method = "post">
-    <input name="username" value={{username}} type="hidden" />
-    <table border = 0>
-        <tr>
-            <th><center>Cover</center></th>
-            <th><center>Movie</center></th>
-            <th><center>Synopsis</center></th>
-            <th><center>Rating</center></th>
-        </tr>
-       {% for movie in random_movies %}
-          <tr>
-                <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
-                <td><center>{{movie.title}}</center></td>
-                <td><center>{{movie.synpsis}}</center></td>
-                <td>
-                    <div class="ratings">
-                        <select name="{{movie.id}}" selected="0">
-                            <option value="Null" name="{{movie.id}}" selected="selected">Rate</option>
-                            <option value="1" name="{{movie.id}}">1</option>
-                            <option value="1.5" name="{{movie.id}}">1.5</option>
-                            <option value="2" name="{{movie.id}}">2</option>
-                            <option value="2.5" name="{{movie.id}}">2.5</option>
-                            <option value="3" name="{{movie.id}}">3</option>
-                            <option value="3.5" name="{{movie.id}}">3.5</option>
-                            <option value="4" name="{{movie.id}}">4</option>
-                            <option value="4.5" name="{{movie.id}}">4.5</option>
-                            <option value="5" name="{{movie.id}}">5</option>
-                        </select>
-                    </div>
-                </td>
-          </tr>
-       {% endfor %}
-       <tr><td colspan="4"><center><input type="submit" value="Submit" /></center></td></tr>
-    </table>
-</form>
-<center><h2>Your recommendations</h2></center>
-Here you can see recommended movies, once you have rated enough movies for the systems to generate recommendations. Cheers!
-<table border = 0>
-    <tr>
-        <th>Cover</th>
-        <th>Movie</th>
-        <th>Synopsis</th>
-    </tr>
-   {% for movie in result %}
-      <tr>
-            <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
-            <td>{{movie.title}}</td>
-            <td>{{movie.synpsis}}</td>
-      </tr>
-   {% endfor %}
-</table>
+
+<div class="container">
+    <ul class="nav nav-pills">
+      <li class="active"><a data-toggle="pill" href="#home">Rate Movies</a></li>
+      <li><a data-toggle="pill" href="#menu1">Best Recommendations</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <center><h2>Rate Movies</h2></center>
+            Please rate the movies that you have watched, and leave the rest. Clicking submit will submit the ratings and generate a new list of movies.
+            {% if msg_success %}
+                 <p><font color="green">{{msg_success}}</font></p>
+            {% endif %}
+            <form action="{{ url_for('ratings') }}" method = "post">
+                <input name="username" value={{username}} type="hidden" />
+                <table border = 0>
+                    <tr>
+                        <th><center>Cover</center></th>
+                        <th><center>Movie</center></th>
+                        <th><center>Synopsis</center></th>
+                        <th><center>Rating</center></th>
+                    </tr>
+                   {% for movie in random_movies %}
+                      <tr>
+                            <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
+                            <td><center>{{movie.title}}</center></td>
+                            <td><center>{{movie.synpsis}}</center></td>
+                            <td>
+                                <div class="ratings">
+                                    <select name="{{movie.id}}" selected="0">
+                                        <option value="Null" name="{{movie.id}}" selected="selected">Rate</option>
+                                        <option value="1" name="{{movie.id}}">1</option>
+                                        <option value="1.5" name="{{movie.id}}">1.5</option>
+                                        <option value="2" name="{{movie.id}}">2</option>
+                                        <option value="2.5" name="{{movie.id}}">2.5</option>
+                                        <option value="3" name="{{movie.id}}">3</option>
+                                        <option value="3.5" name="{{movie.id}}">3.5</option>
+                                        <option value="4" name="{{movie.id}}">4</option>
+                                        <option value="4.5" name="{{movie.id}}">4.5</option>
+                                        <option value="5" name="{{movie.id}}">5</option>
+                                    </select>
+                                </div>
+                            </td>
+                      </tr>
+                   {% endfor %}
+                   <tr><td colspan="4"><center><input type="submit" value="Submit" /></center></td></tr>
+                </table>
+            </form>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <center><h2>Your recommendations</h2></center>
+            Here you can see recommended movies, once you have rated enough movies for the systems to generate recommendations. Cheers!
+            <table border = 0>
+                <tr>
+                    <th>Cover</th>
+                    <th>Movie</th>
+                    <th>Synopsis</th>
+                </tr>
+               {% for movie in result %}
+                  <tr>
+                        <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
+                        <td>{{movie.title}}</td>
+                        <td>{{movie.synpsis}}</td>
+                  </tr>
+               {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

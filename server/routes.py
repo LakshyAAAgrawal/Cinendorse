@@ -22,7 +22,7 @@ def login():
       else:
           recomm=recommendations(user_id)
           to_pass=recom_parse(recomm)
-          rand_mov=random_movies(10)
+          rand_mov=random_movies(10, result['username'])
           return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username']))
     else:
         return('Not Supported')
@@ -34,7 +34,7 @@ def ratings():
       result = request.form
       processed=process_ratings(result)
       train_model()
-      rand_mov=random_movies(10)
+      rand_mov=random_movies(30, result['username'])
       try:
           user_id=username_process(result['username'])
           recomm=recommendations(user_id)
