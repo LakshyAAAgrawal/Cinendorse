@@ -16,9 +16,9 @@ from Recommendation.i2_collab import recommendations_for
 
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
-client=MongoClient()
-#client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
-db=client['try2']
+#client=MongoClient()
+client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
+db=client['deploy_2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
