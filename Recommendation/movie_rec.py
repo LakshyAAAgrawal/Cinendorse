@@ -213,9 +213,9 @@ def process_ratings(form_input):
 def recommendations(user_id):
     l1=u2_collab(10, user_id)
     l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
-    #l3=recommendations_for(10, user_id)
+    l3=recommendations_for(10, user_id)
     l2.extend(l1[:10])
-    #l2.extend(l3[:10])
+    l2.extend(l3[:10])
     l2.sort(reverse=True)
     return(l2)
 
