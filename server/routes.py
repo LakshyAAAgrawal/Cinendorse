@@ -34,7 +34,7 @@ def ratings():
       result = request.form
       processed=process_ratings(result)
       train_model()
-      rand_mov=random_movies(30, result['username'])
+      rand_mov=random_movies(15, result['username'])
       try:
           user_id=username_process(result['username'])
           recomm=recommendations(user_id)
