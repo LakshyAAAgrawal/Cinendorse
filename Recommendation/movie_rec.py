@@ -124,13 +124,13 @@ def update_similarity_users(user_id):
 
 def u2_collab(n, user_id):
     global users, movies, ratings
-    user_a=users.find({'_id':user_id})[0]
+    user_a=users.find_one({'_id':user_id})
     print('21', datetime.datetime.now().minute, datetime.datetime.now().second)
     try:
         similarity_dict=user_a['similarity']
     except:
         update_similarity_users(user_id)
-        user_a=users.find({'_id':user_id})[0]
+        user_a=users.find_one({'_id':user_id})
         similarity_dict=user_a['similarity']
     print('22', datetime.datetime.now().minute, datetime.datetime.now().second)
     users_to_consider=[]
@@ -154,9 +154,9 @@ def u2_collab(n, user_id):
         for user in users_to_consider:
             similarity=similarity_dict[user]
             sum_weights=sum_weights+similarity
-            user_obj=users.find({'username':user})[0]
+            user_obj=users.find_one({'username':user})
             try:
-                bias=bias+similarity*(ratings.find({'user_id':user_obj['_id'], 'movie_id':movie_id})[0]['rating']-user_obj['mean_rating'])
+                bias=bias+similarity*(ratings.find_one({'user_id':user_obj['_id'], 'movie_id':movie_id})['rating']-user_obj['mean_rating'])
             except:
                 None
         #movie_ls[0]=bias/sum_weights + mean
@@ -169,7 +169,7 @@ def recom_parse(lis):
     global users, movies, ratings
     to_ret=[]
     for i in lis:
-        dict=movies.find({'_id':i[1]})[0]
+        dict=movies.find_one({'_id':i[1]})
         to_add={'title':dict['title'], \
                 'year_of_release':dict['year_of_release'], \
                 'license':dict['license'], \
@@ -196,7 +196,7 @@ def random_movies(n, username):
     user=users.find_one({'username':username})
     lis=rand_movies_for_rating(n, user['_id'])
     for l in lis:
-        movie_obj=movies.find({'_id':l})[0]
+        movie_obj=movies.find_one({'_id':l})
         to_add={'id':movie_obj['_id'],
                 'title':movie_obj['title'], \
                 'genres':movie_obj['genres'], \
@@ -230,7 +230,7 @@ def random_movies(n, username):
 
 def process_ratings(form_input):
     #print(form_input['username'])
-    user_id=users.find({'username':form_input['username']})[0]['_id']
+    user_id=users.find_one({'username':form_input['username']})['_id']
     #print(user_id)
     no_of_ratings=0
     for rating in form_input:
@@ -261,7 +261,7 @@ def recommendations(user_id):
 
 def username_process(username):
     if users.find({'username':username}).count()>0:
-        user_id=users.find({'username':username})[0]['_id']
+        user_id=users.find_one({'username':username})['_id']
     else:
         user_id=add_user(username)
     #return(Recommendation.matrix_factorisation.recommend_user(10, user_id))
