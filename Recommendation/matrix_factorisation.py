@@ -88,7 +88,9 @@ def train_model():
             ratings_array[user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]]=rating['rating']
         new_U, new_M=matrix_factorisation(ratings_array, user_counter, movie_counter, rating_indices)
     np_arrays.update({'name':'U'}, {'$set':{'matrix':Binary(pickle.dumps(new_U))}}, upsert=True)
+    np_arrays.update({'name':'U_len'}, {'$set':{'value':len(U)}}, upsert=True)
     np_arrays.update({'name':'M'}, {'$set':{'matrix':Binary(pickle.dumps(new_M))}}, upsert=True)
+    np_arrays.update({'name':'M_len'}, {'$set':{'value':len(M)}}, upsert=True)
 
 '''
 #def update_exp_ratings_factorisation():

@@ -1,3 +1,5 @@
 CinEndorse/
 __pycache__/
 export2500.json
+.idea/
+venv/

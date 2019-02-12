@@ -1,14 +1,14 @@
 #users.create_index('username', unique=True)
+import time
+print("60")
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import pandas as pd
 import numpy as np
 from random import randint
 from string import ascii_letters
-import Recommendation.u2_collab
 import datetime
 
-from Recommendation.matrix_factorisation import train_model
 import Recommendation.matrix_factorisation
 from Recommendation.i2_collab import recommendations_for
 
@@ -17,6 +17,7 @@ from Recommendation.i2_collab import recommendations_for
 
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 # client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
+
 # client=MongoClient()
 client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
 db=client['deploy_2']
@@ -24,7 +25,6 @@ db=client['deploy_2']
 movies=db['movies']
 ratings=db['ratings']
 users=db['users']
-
 def norm(v):
   sum = float(0)
   for i in range(len(v)):
@@ -45,7 +45,7 @@ def add_user(username):
     #print(username, 'added as', user_id)
     update_ratings_average(user_id)
     update_similarity_users(user_id)
-    train_model()
+    Recommendation.matrix_factorisation.train_model()
     return(user_id)
 
 def add_rating(movie_id, user_id, rating):
@@ -244,7 +244,7 @@ def process_ratings(form_input):
     return(no_of_ratings)
 
 def recommendations(user_id):
-    '''
+
     print('10', datetime.datetime.now().minute, datetime.datetime.now().second)
     l1=u2_collab(10, user_id)
     print('11', datetime.datetime.now().minute, datetime.datetime.now().second)
@@ -258,8 +258,8 @@ def recommendations(user_id):
     l2.sort(reverse=True)
     print('15', datetime.datetime.now().minute, datetime.datetime.now().second)
     return(l2)
-    '''
-    return([[10, movies.find_one({}, {'_id':1})['_id']]])
+
+    # return([[10, movies.find_one({}, {'_id':1})['_id']]])
 
 def username_process(username):
     if users.find({'username':username}).count()>0:
