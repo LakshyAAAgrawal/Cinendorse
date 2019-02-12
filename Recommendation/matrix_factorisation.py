@@ -36,10 +36,10 @@ def matrix_factorisation(matrix, no_of_users, no_of_movies, rating_indices, U=No
             q=q+alpha*to_change*p
     return(U, M)
 
-def train_model():
+def train_model(recom_vars_obj):
     global users, movies, ratings, exp_ratings_factorisation, k
-    movie_index_dict={}
-    user_index_dict={}
+    #movie_index_dict={}
+    #user_index_dict={}
     movie_counter=0
     if np_arrays.find({'name':'U'}).count()>0:
         U=pickle.loads(np_arrays.find({'name':'U'}).next()['matrix'])
@@ -48,45 +48,45 @@ def train_model():
         movie_counter=len(M)
         for movie in movies.find():
             try:
-                movie_index_dict[movie['_id']]=movie['matrix_index']
+                recom_vars_obj.movie_index_dict[movie['_id']]=movie['matrix_index']
             except:
-                movie_index_dict[movie['_id']]=movie_counter
+                recom_vars_obj.movie_index_dict[movie['_id']]=movie_counter
                 movies.update({'_id':movie['_id']}, {'$set':{'matrix_index':movie_counter}})
                 M=np.vstack([M, np.random.normal(0,1,[1,k])])
                 movie_counter+=1
         for user in users.find():
             try:
-                user_index_dict[user['_id']]=user['matrix_index']
+                recom_vars_obj.user_index_dict[user['_id']]=user['matrix_index']
             except:
-                user_index_dict[user['_id']]=user_counter
+                recom_vars_obj.user_index_dict[user['_id']]=user_counter
                 users.update({'_id':user['_id']}, {'$set':{'matrix_index':user_counter}})
                 U=np.vstack([U, np.random.normal(0,1,[1,k])])
                 user_counter+=1
-        ratings_array=np.empty((user_counter, movie_counter))
-        ratings_array.fill(np.nan)
+        recom_vars_obj.ratings_array=np.empty((user_counter, movie_counter))
+        recom_vars_obj.ratings_array.fill(np.nan)
         rating_indices=[]
         for rating in ratings.find():
-            rating_indices.append([user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]])
-            ratings_array[user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]]=rating['rating']
-        new_U, new_M=matrix_factorisation(ratings_array, user_counter, movie_counter, rating_indices, U, M)
+            rating_indices.append([recom_vars_obj.user_index_dict[rating['user_id']], recom_vars_obj.movie_index_dict[rating['movie_id']]])
+            recom_vars_obj.ratings_array[recom_vars_obj.user_index_dict[rating['user_id']], recom_vars_obj.movie_index_dict[rating['movie_id']]]=rating['rating']
+        new_U, new_M=matrix_factorisation(recom_vars_obj.ratings_array, user_counter, movie_counter, rating_indices, U, M)
     else:
         for movie in movies.find():
-            movie_index_dict[movie['_id']]=movie_counter
+            recom_vars_obj.movie_index_dict[movie['_id']]=movie_counter
             movies.update({'_id':movie['_id']}, {'$set':{'matrix_index':movie_counter}})
             movie_counter+=1
         user_counter=0
         for user in users.find():
-            user_index_dict[user['_id']]=user_counter
+            recom_vars_obj.user_index_dict[user['_id']]=user_counter
             users.update({'_id':user['_id']}, {'$set':{'matrix_index':user_counter}})
             user_counter+=1
-        ratings_array=np.empty((user_counter, movie_counter))
-        ratings_array.fill(np.nan)
+        recom_vars_obj.ratings_array=np.empty((user_counter, movie_counter))
+        recom_vars_obj.ratings_array.fill(np.nan)
         rating_indices=[]
         print("4")
         for rating in ratings.find():
-            rating_indices.append([user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]])
-            ratings_array[user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]]=rating['rating']
-        new_U, new_M=matrix_factorisation(ratings_array, user_counter, movie_counter, rating_indices)
+            rating_indices.append([recom_vars_obj.user_index_dict[rating['user_id']], recom_vars_obj.movie_index_dict[rating['movie_id']]])
+            recom_vars_obj.ratings_array[recom_vars_obj.user_index_dict[rating['user_id']], recom_vars_obj.movie_index_dict[rating['movie_id']]]=rating['rating']
+        new_U, new_M=matrix_factorisation(recom_vars_obj.ratings_array, user_counter, movie_counter, rating_indices)
     np_arrays.update({'name':'U'}, {'$set':{'matrix':Binary(pickle.dumps(new_U))}}, upsert=True)
     np_arrays.update({'name':'U_len'}, {'$set':{'value':len(U)}}, upsert=True)
     np_arrays.update({'name':'M'}, {'$set':{'matrix':Binary(pickle.dumps(new_M))}}, upsert=True)

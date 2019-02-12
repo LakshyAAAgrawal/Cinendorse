@@ -32,7 +32,7 @@ def norm(v):
     sum += v[i]**2
   return sum**(0.5)
 
-def rating_for(user_id, movie_id, algorithm='u2_collab'):
+def rating_for(user_id, movie_id, algorithm='u2_collab', a=None):
     if algorithm=='i2_collab':
         item_mean=np.nanmean(a.ratings_array, axis=0)[a.movie_index_dict[movie_id]]
         bias=0
@@ -49,7 +49,7 @@ def rating_for(user_id, movie_id, algorithm='u2_collab'):
             exp_rating=0
         return(exp_rating)
 
-def recommendations_for(n, user_id, algorithm='i2'):
+def recommendations_for(n, user_id, algorithm='i2', a=None):
     rating_list=[]
     if algorithm=='i2':
         for rating in ratings.find({'user_id':{'$ne':user_id}}):
@@ -59,7 +59,7 @@ def recommendations_for(n, user_id, algorithm='i2'):
                     fla=False
                     continue
             if fla:
-                rating_list.append([rating_for(user_id, rating['movie_id'], algorithm='i2_collab'), rating['movie_id']])
+                rating_list.append([rating_for(user_id, rating['movie_id'], algorithm='i2_collab',a=a), rating['movie_id']])
         rating_list.sort(reverse=True)
     else:
         None

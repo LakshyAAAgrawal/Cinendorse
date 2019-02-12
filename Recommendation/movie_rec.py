@@ -11,7 +11,8 @@ import datetime
 
 import Recommendation.matrix_factorisation
 from Recommendation.i2_collab import recommendations_for
-
+from Recommendation.recom_vars import recom_vars
+a=recom_vars()
 # from matrix_factorisation import train_model
 # import matrix_factorisation
 
@@ -45,7 +46,7 @@ def add_user(username):
     #print(username, 'added as', user_id)
     update_ratings_average(user_id)
     update_similarity_users(user_id)
-    Recommendation.matrix_factorisation.train_model()
+    Recommendation.matrix_factorisation.train_model(a)
     return(user_id)
 
 def add_rating(movie_id, user_id, rating):
@@ -241,6 +242,7 @@ def process_ratings(form_input):
             else:
                 add_rating(ObjectId(rating), user_id, float(form_input[rating]))
                 no_of_ratings=no_of_ratings+1
+    Recommendation.matrix_factorisation.train_model(a)
     return(no_of_ratings)
 
 def recommendations(user_id):
@@ -250,7 +252,7 @@ def recommendations(user_id):
     print('11', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
     print('12', datetime.datetime.now().minute, datetime.datetime.now().second)
-    l3=recommendations_for(10, user_id)
+    l3=recommendations_for(10, user_id, 'i2', a)
     print('13', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2.extend(l1[:10])
     l2.extend(l3[:10])

@@ -39,7 +39,6 @@ def ratings():
     if request.method == 'POST':
       result = request.form
       processed=process_ratings(result)
-      train_model()
       rand_mov=random_movies(15, result['username'])
       try:
           user_id=username_process(result['username'])
