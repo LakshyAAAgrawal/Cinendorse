@@ -158,8 +158,8 @@ def u2_collab(n, user_id):
             except:
                 None
         #movie_ls[0]=bias/sum_weights + mean
-        movie_ls=None
         to_ret.append([bias/sum_weights + mean, movie_ls[1]])
+        movie_ls=None
     to_ret.sort(reverse=True)
     print('25')
     return(to_ret[:n])
