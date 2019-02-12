@@ -138,7 +138,7 @@ def u2_collab(n, user_id):
     for user_2 in similarity_dict:
         if similarity_dict[user_2]>0:
             users_to_consider.append(user_2)
-            for rating in ratings.find({'user_id':users.find_one({'username':user_2})['_id']}):
+            for rating in ratings.find({'user_id':users.find_one({'username':user_2}, {'_id':1})['_id']}, {'movie_id':1}):
                 if not ([None, rating['movie_id']] in movies_to_consider):
                     movies_to_consider.append([None, rating['movie_id']])
     to_ret=[]
@@ -158,6 +158,7 @@ def u2_collab(n, user_id):
             except:
                 None
         #movie_ls[0]=bias/sum_weights + mean
+        movie_ls=None
         to_ret.append([bias/sum_weights + mean, movie_ls[1]])
     to_ret.sort(reverse=True)
     print('25')
