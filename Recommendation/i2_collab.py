@@ -23,7 +23,6 @@ users=db['users']
 movie_similarity=db['movie_similarity']
 np_arrays=db['np_arrays']
 print("81")
-a=recom_vars()
 print("82")
 
 def norm(v):
