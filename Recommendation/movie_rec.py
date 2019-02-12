@@ -154,9 +154,9 @@ def u2_collab(n, user_id):
         for user in users_to_consider:
             similarity=similarity_dict[user]
             sum_weights=sum_weights+similarity
-            user_obj=users.find_one({'username':user})
+            user_obj=users.find({'username':user})[0]
             try:
-                bias=bias+similarity*(ratings.find_one({'user_id':user_obj['_id'], 'movie_id':movie_id})['rating']-user_obj['mean_rating'])
+                bias=bias+similarity*(ratings.find({'user_id':user_obj['_id'], 'movie_id':movie_id})[0]['rating']-user_obj['mean_rating'])
             except:
                 None
         #movie_ls[0]=bias/sum_weights + mean
