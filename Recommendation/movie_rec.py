@@ -244,6 +244,7 @@ def process_ratings(form_input):
     return(no_of_ratings)
 
 def recommendations(user_id):
+    '''
     print('10', datetime.datetime.now().minute, datetime.datetime.now().second)
     l1=u2_collab(10, user_id)
     print('11', datetime.datetime.now().minute, datetime.datetime.now().second)
@@ -257,10 +258,12 @@ def recommendations(user_id):
     l2.sort(reverse=True)
     print('15', datetime.datetime.now().minute, datetime.datetime.now().second)
     return(l2)
+    '''
+    return([10, movies.find_one({}, {'_id':1})['_id']])
 
 def username_process(username):
     if users.find({'username':username}).count()>0:
-        user_id=users.find_one({'username':username})['_id']
+        user_id=users.find_one({'username':username}, {'_id':1})['_id']
     else:
         user_id=add_user(username)
     #return(Recommendation.matrix_factorisation.recommend_user(10, user_id))
