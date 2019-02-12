@@ -49,9 +49,12 @@
                             <div class="col">
                                 <div class="row">
                                     <img src="{{movie.thumbnail_url}}" title="Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded">
+
+                                </div>
+                                <div class="row">
                                     <center>{{movie.title}} ({{movie.year_of_release}})</center>
                                 </div>
-                                <div class="row"><div class="col">
+                                <div class="row">
                                     <div class="ratings">
                                         <select name="{{movie.id}}" selected="0" class="form-control btn-primary">
                                             <option value="Null" name="{{movie.id}}" selected="selected">Rate</option>
@@ -65,7 +68,7 @@
                                             <option value="4.5" name="{{movie.id}}">4.5</option>
                                             <option value="5" name="{{movie.id}}">5</option>
                                         </select>
-                                </div></div>
+                                </div>
                             </div>
                             </div>
                             <!-- </td> -->
@@ -99,9 +102,9 @@
                         <!-- <td>{{movie.title}}</td> -->
                         <!-- <td>{{movie.synpsis}}</td> -->
                   <!-- </tr> -->
-                  <div class="col">
-                      <img src="{{movie.thumbnail_url}}" title="Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded">
-                      <center>{{movie.title}} ({{movie.year_of_release}})</center>
+                  <div class="col"><div class="row">
+                      <img src="{{movie.thumbnail_url}}" title="Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded"></div><div class="row">
+                      <center>{{movie.title}} ({{movie.year_of_release}})</center></div>
                     </div>
                {% endfor %}
                </div>
