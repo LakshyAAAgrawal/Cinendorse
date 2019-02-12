@@ -259,7 +259,7 @@ def recommendations(user_id):
     print('15', datetime.datetime.now().minute, datetime.datetime.now().second)
     return(l2)
     '''
-    return([10, movies.find_one({}, {'_id':1})['_id']])
+    return([[10, movies.find_one({}, {'_id':1})['_id']]])
 
 def username_process(username):
     if users.find({'username':username}).count()>0:
