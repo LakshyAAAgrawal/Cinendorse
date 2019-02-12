@@ -129,7 +129,7 @@ def u2_collab(n, user_id):
         similarity_dict=user_a['similarity']
     except:
         update_similarity_users(user_id)
-        user_a=users.find_one({'_id':user_id})
+        user_a=users.find({'_id':user_id})[0]
         similarity_dict=user_a['similarity']
     users_to_consider=[]
     movies_to_consider=[]
