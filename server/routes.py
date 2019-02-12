@@ -1,13 +1,21 @@
 from flask import render_template, redirect
 from server import app
 from flask import request
-from Recommendation.movie_rec import username_process
-from Recommendation.movie_rec import recommendations
-from Recommendation.movie_rec import recom_parse
-from Recommendation.movie_rec import random_movies
-from Recommendation.movie_rec import process_ratings
-from Recommendation.matrix_factorisation import train_model
 import datetime
+print('51', datetime.datetime.now().minute, datetime.datetime.now().second)
+from Recommendation.movie_rec import username_process
+print('52', datetime.datetime.now().minute, datetime.datetime.now().second)
+from Recommendation.movie_rec import recommendations
+print('53', datetime.datetime.now().minute, datetime.datetime.now().second)
+from Recommendation.movie_rec import recom_parse
+print('54', datetime.datetime.now().minute, datetime.datetime.now().second)
+from Recommendation.movie_rec import random_movies
+print('55', datetime.datetime.now().minute, datetime.datetime.now().second)
+from Recommendation.movie_rec import process_ratings
+print('56', datetime.datetime.now().minute, datetime.datetime.now().second)
+from Recommendation.matrix_factorisation import train_model
+print('57', datetime.datetime.now().minute, datetime.datetime.now().second)
+
 @app.route('/')
 def index():
     return render_template("index.html")
