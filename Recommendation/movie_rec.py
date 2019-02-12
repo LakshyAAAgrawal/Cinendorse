@@ -137,10 +137,12 @@ def u2_collab(n, user_id):
     print('23')
     for user_2 in similarity_dict:
         if similarity_dict[user_2]>0:
-            users_to_consider.append(user_2)
-            for rating in ratings.find({'user_id':users.find_one({'username':user_2}, {'_id':1})['_id']}, {'movie_id':1}):
-                if not ([None, rating['movie_id']] in movies_to_consider):
-                    movies_to_consider.append([None, rating['movie_id']])
+            users_to_consider.append([similarity_dict[user_2], user_2])
+    users_to_consider.sort(reverse=True)
+    for user_2_ls in users_to_consider[:5]:
+        for rating in ratings.find({'user_id':users.find_one({'username':user_2_ls[1]}, {'_id':1})['_id']}, {'movie_id':1}):
+            if not ([None, rating['movie_id']] in movies_to_consider):
+                movies_to_consider.append([None, rating['movie_id']])
     to_ret=[]
     print('24')
     for movie_ls in movies_to_consider:
