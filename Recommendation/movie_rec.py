@@ -147,7 +147,6 @@ def u2_collab(n, user_id):
     for movie_ls in movies_to_consider:
         i=0
         movie_id=movie_ls[1]
-        all_ratings=ratings.find({'movie_id':movie_id})
         mean=user_a['mean_rating']
         bias=0
         sum_weights=0
