@@ -204,7 +204,8 @@ def random_movies(n, username):
                 'synpsis':movie_obj['synpsis'], \
                 'directors':movie_obj['directors'], \
                 'cast': movie_obj['cast'],\
-                'thumbnail_url':movie_obj['thumbnail_url'] \
+                'thumbnail_url':movie_obj['thumbnail_url'], \
+                'year_of_release':movie_obj['year_of_release']
             }
         if to_add in to_ret:
             None
@@ -221,7 +222,8 @@ def random_movies(n, username):
                     'synpsis':movie_obj['synpsis'], \
                     'directors':movie_obj['directors'], \
                     'cast': movie_obj['cast'],\
-                    'thumbnail_url':movie_obj['thumbnail_url'] \
+                    'thumbnail_url':movie_obj['thumbnail_url'], \
+                    'year_of_release':movie_obj['year_of_release']
                 }
             if to_add in to_ret:
                 None

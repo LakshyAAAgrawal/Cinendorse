@@ -16,18 +16,19 @@
 <div class="container">
     <ul class="nav nav-pills">
       <li class="active"><a data-toggle="pill" href="#home">Rate Movies</a></li>
-      <li><a data-toggle="pill" href="#menu1">Best Recommendations</a></li>
+      <li><a data-toggle="pill" href="#menu1">Recommendations</a></li>
     </ul>
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <center><h2>Rate Movies</h2></center>
-            Please rate the movies that you have watched, and leave the rest. Clicking submit will submit the ratings and generate a new list of movies.
+            Welcome to Cinendorse. Get the best movie recommendations just by rating the movies you have watched. To ensure good recommendations, please rate only those movies which you have watched, and rate them based on your own personal experience, rather than its common public perception. Pressing Submit will submit the ratings given(and even if not given) and load a new list of movies. Hover over the movie posters for more info.. You can see your recommendations on the "Recommendation" Tab.
             {% if msg_success %}
                  <p><font color="green">{{msg_success}}</font></p>
             {% endif %}
             <form action="{{ url_for('ratings') }}" method = "post">
                 <input name="username" value={{username}} type="hidden" />
+                <!--
                 <table border = 0>
                     <tr>
                         <th><center>Cover</center></th>
@@ -35,50 +36,76 @@
                         <th><center>Synopsis</center></th>
                         <th><center>Rating</center></th>
                     </tr>
+                    -->
+                    <div class="row">
                    {% for movie in random_movies %}
+                   <!--
                       <tr>
-                            <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
+                      -->
+                            <!-- <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
                             <td><center>{{movie.title}}</center></td>
                             <td><center>{{movie.synpsis}}</center></td>
-                            <td>
-                                <div class="ratings">
-                                    <select name="{{movie.id}}" selected="0">
-                                        <option value="Null" name="{{movie.id}}" selected="selected">Rate</option>
-                                        <option value="1" name="{{movie.id}}">1</option>
-                                        <option value="1.5" name="{{movie.id}}">1.5</option>
-                                        <option value="2" name="{{movie.id}}">2</option>
-                                        <option value="2.5" name="{{movie.id}}">2.5</option>
-                                        <option value="3" name="{{movie.id}}">3</option>
-                                        <option value="3.5" name="{{movie.id}}">3.5</option>
-                                        <option value="4" name="{{movie.id}}">4</option>
-                                        <option value="4.5" name="{{movie.id}}">4.5</option>
-                                        <option value="5" name="{{movie.id}}">5</option>
-                                    </select>
+                            <td> -->
+                            <div class="col">
+                                <div class="row">
+                                    <img src="{{movie.thumbnail_url}}" title="Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded">
+                                    <center>{{movie.title}} ({{movie.year_of_release}})</center>
                                 </div>
-                            </td>
+                                <div class="row"><div class="col">
+                                    <div class="ratings">
+                                        <select name="{{movie.id}}" selected="0" class="form-control btn-primary">
+                                            <option value="Null" name="{{movie.id}}" selected="selected">Rate</option>
+                                            <option value="1" name="{{movie.id}}">1</option>
+                                            <option value="1.5" name="{{movie.id}}">1.5</option>
+                                            <option value="2" name="{{movie.id}}">2</option>
+                                            <option value="2.5" name="{{movie.id}}">2.5</option>
+                                            <option value="3" name="{{movie.id}}">3</option>
+                                            <option value="3.5" name="{{movie.id}}">3.5</option>
+                                            <option value="4" name="{{movie.id}}">4</option>
+                                            <option value="4.5" name="{{movie.id}}">4.5</option>
+                                            <option value="5" name="{{movie.id}}">5</option>
+                                        </select>
+                                </div></div>
+                            </div>
+                            </div>
+                            <!-- </td> -->
+                            <!--
                       </tr>
+                      -->
                    {% endfor %}
-                   <tr><td colspan="4"><center><input type="submit" value="Submit" /></center></td></tr>
+
+                   </div>
+                   <div class="row">
+                       <div class="col"><center><input type="submit" value="Submit" class="btn btn-primary btn-lg" /></center></div>
+                       </div>
+                <!--
                 </table>
+                -->
             </form>
         </div>
         <div id="menu1" class="tab-pane fade">
             <center><h2>Your recommendations</h2></center>
-            Here you can see recommended movies, once you have rated enough movies for the systems to generate recommendations. Cheers!
-            <table border = 0>
-                <tr>
-                    <th>Cover</th>
-                    <th>Movie</th>
-                    <th>Synopsis</th>
-                </tr>
+            Here you can see the movies recommended for you. Rate as many movies as possible( Psst., only those that you have watched ) to get better and better recommendations!!
+            <!-- <table border = 0> -->
+                <!-- <tr> -->
+                    <!-- <th>Cover</th> -->
+                    <!-- <th>Movie</th> -->
+                    <!-- <th>Synopsis</th> -->
+                <!-- </tr> -->
+                <div class="row">
                {% for movie in result %}
-                  <tr>
-                        <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td>
-                        <td>{{movie.title}}</td>
-                        <td>{{movie.synpsis}}</td>
-                  </tr>
+                  <!-- <tr> -->
+                        <!-- <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td> -->
+                        <!-- <td>{{movie.title}}</td> -->
+                        <!-- <td>{{movie.synpsis}}</td> -->
+                  <!-- </tr> -->
+                  <div class="col">
+                      <img src="{{movie.thumbnail_url}}" title="Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded">
+                      <center>{{movie.title}} ({{movie.year_of_release}})</center>
+                    </div>
                {% endfor %}
-            </table>
+               </div>
+            <!-- </table> -->
         </div>
     </div>
 </div>
