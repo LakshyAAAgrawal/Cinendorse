@@ -29,6 +29,7 @@ def login():
           print('3', datetime.datetime.now().minute, datetime.datetime.now().second)
           rand_mov=random_movies(10, result['username'])
           print('4', datetime.datetime.now().minute, datetime.datetime.now().second)
+          print(dir())
           return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username']))
     else:
         return('Not Supported')
