@@ -1,6 +1,4 @@
 #users.create_index('username', unique=True)
-import time
-print("60")
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import pandas as pd
@@ -126,17 +124,17 @@ def update_similarity_users(user_id):
 def u2_collab(n, user_id):
     global users, movies, ratings
     user_a=users.find_one({'_id':user_id})
-    print('21', datetime.datetime.now().minute, datetime.datetime.now().second)
+    print('21')
     try:
         similarity_dict=user_a['similarity']
     except:
         update_similarity_users(user_id)
         user_a=users.find_one({'_id':user_id})
         similarity_dict=user_a['similarity']
-    print('22', datetime.datetime.now().minute, datetime.datetime.now().second)
+    print('22')
     users_to_consider=[]
     movies_to_consider=[]
-    print('23', datetime.datetime.now().minute, datetime.datetime.now().second)
+    print('23')
     for user_2 in similarity_dict:
         if similarity_dict[user_2]>0:
             users_to_consider.append(user_2)
@@ -144,7 +142,7 @@ def u2_collab(n, user_id):
                 if not ([None, rating['movie_id']] in movies_to_consider):
                     movies_to_consider.append([None, rating['movie_id']])
     to_ret=[]
-    print('24', datetime.datetime.now().minute, datetime.datetime.now().second)
+    print('24')
     for movie_ls in movies_to_consider:
         i=0
         movie_id=movie_ls[1]
@@ -162,7 +160,7 @@ def u2_collab(n, user_id):
         #movie_ls[0]=bias/sum_weights + mean
         to_ret.append([bias/sum_weights + mean, movie_ls[1]])
     to_ret.sort(reverse=True)
-    print('25', datetime.datetime.now().minute, datetime.datetime.now().second)
+    print('25')
     return(to_ret[:n])
 
 def recom_parse(lis):
@@ -246,22 +244,13 @@ def process_ratings(form_input):
     return(no_of_ratings)
 
 def recommendations(user_id):
-
-    print('10', datetime.datetime.now().minute, datetime.datetime.now().second)
     l1=u2_collab(10, user_id)
-    print('11', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
-    print('12', datetime.datetime.now().minute, datetime.datetime.now().second)
     l3=recommendations_for(10, user_id, 'i2', a)
-    print('13', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2.extend(l1[:10])
     l2.extend(l3[:10])
-    print('14', datetime.datetime.now().minute, datetime.datetime.now().second)
     l2.sort(reverse=True)
-    print('15', datetime.datetime.now().minute, datetime.datetime.now().second)
     return(l2)
-
-    # return([[10, movies.find_one({}, {'_id':1})['_id']]])
 
 def username_process(username):
     if users.find({'username':username}).count()>0:

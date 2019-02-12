@@ -2,7 +2,6 @@ from flask import render_template, redirect
 from server import app
 from flask import request
 import datetime
-import time
 from Recommendation.movie_rec import username_process
 from Recommendation.movie_rec import recommendations
 from Recommendation.movie_rec import recom_parse
@@ -17,10 +16,8 @@ def index():
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     if request.method == 'POST':
-        print("72")
-        time.sleep(3)
         result = request.form
-        print('0', datetime.datetime.now().minute, datetime.datetime.now().second)
+        # print('0', datetime.datetime.now().minute, datetime.datetime.now().second)
         try:
             user_id=username_process(result['username'])
         except:
