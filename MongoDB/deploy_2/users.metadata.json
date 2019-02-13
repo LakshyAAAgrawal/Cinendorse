@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"deploy_2.users"},{"v":2,"unique":true,"key":{"username":1},"name":"username_1","background":true,"ns":"deploy_2.users"}],"uuid":"6d6fe341965c458bbd77e6bb27d4a8f3"}
