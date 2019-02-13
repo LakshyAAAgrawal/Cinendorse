@@ -44,9 +44,8 @@ This was my first experience with a full fledged web project. Also, I had never 
 This was my first time using flask, numpy, and also the MongoDB database. Hence, it was filled with learning experience for me.
 
 I wanted to use a gradient descent algorithm to find the weights to be given to the output of each algorithm, using the ratings data as a training model and did calculations for it, however, since I couldn't put in the time to train the model, I did not implement it.
-![Calc](https://github.com/LakshyAAAgrawal/Cinendorse/edit/master/server/static/calc.jpg "sefw")
 
 <p align="center">
-  <img src="https://github.com/LakshyAAAgrawal/Cinendorse/edit/master/server/static/calc.jpg" width="350" title="Calculations for finding weights of the output of algorithms">
+  <img src="server/static/calc.jpg" width="350" title="Calculations for finding weights of the output of algorithms">
 </p>
 
