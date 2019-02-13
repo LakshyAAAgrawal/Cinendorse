@@ -1,6 +1,5 @@
 # Cinendorse
-This is a project developed as an entry project for Precog.
-It gives Movie recommendations to the user based on data collected from them in the form of ratings to movies from a database of 5000 movies.
+Cinendorse gives movie recommendations to the users based on data collected from them in the form of ratings to movies from a database of 5000 movies. It takes into consideration 3 different algorithms to give recommendations.
 
 ## Data Collection
 For the purpose of collecting data on movies, I wrote the Data_Scraping/main.py script, which takes an integer i as input, and scrapes data for i pages from the IMDB advanced search pages, each having 250 movie, which display all the details about the movies in a single page. I chose to scrape data for the "Most Rated" movies, and not "Highly Rated Movies" so as to ensure that my database does get almost all relatable movies to the target userbase around me.
@@ -42,4 +41,7 @@ This project relies on Flask with Jinja for handling the web display and serving
 ## Major Learnings
 This was my first experience with a full fledged web project. Also, I had never before worked on Machine Learning algorithms. To get an opportunity to code the entire algorithm from scratch was a wonderful experience. This was also my first time working on a project with deployment at heroku. One major issue faced was that of the limited memory provided, and for quite some time, my application was showing a memory excess error. After a lot of optimizations, I was able to bring it down by 90%. While looking for a solution, I also found out about worker processes, however, since it was very late, I decided not to implement those, but, nevertheless, I read up about it and how it could help in my situation.
 
+This was my first time using flask, numpy, and also the MongoDB database. Hence, it was filled with learning experience for me.
+
 I wanted to use a gradient descent algorithm to find the weights to be given to the output of each algorithm, using the ratings data as a training model and did calculations for it, however, since I couldn't put in the time to train the model, I did not implement it.
+![Calc](https://github.com/LakshyAAAgrawal/Cinendorse/edit/master/server/static/calc.jpg)
