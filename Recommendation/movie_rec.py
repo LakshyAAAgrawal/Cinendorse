@@ -17,13 +17,6 @@ a=recom_vars()
 #client=MongoClient('mongodb://admin:mLabAdmin1000@ds119755.mlab.com:19755/try')
 # client=MongoClient('mongodb://admin:mLabAdmin1000@ds221405.mlab.com:21405/try')
 
-# client=MongoClient()
-client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
-db=client['deploy_2']
-# db=client['try2']
-movies=db['movies']
-ratings=db['ratings']
-users=db['users']
 def norm(v):
   sum = float(0)
   for i in range(len(v)):
@@ -31,14 +24,13 @@ def norm(v):
   return sum**(0.5)
 
 def add_user(username):
-    global users
     if username=='' or ('.' in username):
         raise Exception()
     if  not all(c in ascii_letters+'0123456789' for c in username):
         raise Exception()
     user_dict={'username':username, 'similarity':{}}
     try:
-        user_id=users.insert_one(user_dict).inserted_id
+        user_id=a.users.insert_one(user_dict).inserted_id
     except:
         pass
     #print(username, 'added as', user_id)
@@ -48,40 +40,33 @@ def add_user(username):
     return(user_id)
 
 def add_rating(movie_id, user_id, rating):
-    global users, movies, ratings
     to_enter={'user_id':user_id, 'movie_id': movie_id, 'rating':rating}
     #print(to_enter)
-    ratings.insert_one(to_enter)
+    a.ratings.insert_one(to_enter)
     #print(rating,'inserted for', movies.find_one({'_id':movie_id})['title'], 'by', users.find_one({'_id':user_id})['username'])
     update_ratings_average(user_id)
     update_similarity_users(user_id)
 
 def update_ratings_average(user_id):
-    global users, movies, ratings
-    rating_cursor=ratings.find({'user_id':user_id})
+    rating_cursor=a.ratings.find({'user_id':user_id})
     sum=0
-    for rating in ratings.find({'user_id':user_id}):
+    for rating in a.ratings.find({'user_id':user_id}):
         sum=sum+rating['rating']
-    no_of_ratings=ratings.find({'user_id':user_id}).count()
+    no_of_ratings=a.ratings.find({'user_id':user_id}).count()
     if no_of_ratings>0:
         mean=sum/no_of_ratings
     else:
         mean=3
-    users.find_one_and_update({'_id': user_id}, {'$set': {'mean_rating': mean}}, upsert=True)
+    a.users.find_one_and_update({'_id': user_id}, {'$set': {'mean_rating': mean}}, upsert=True)
 
 def update_ratings_movies(movie_id):
-    global users, movies, ratings
-    rating_cursor=ratings.find({'movie_id':movie_id})
-
     sum=0
-    for rating in ratings.find({'movie_id':movie_id}):
+    for rating in a.ratings.find({'movie_id':movie_id}):
         sum=sum+rating['rating']
-    mean=sum/ratings.find({'movie_id':movie_id}).count()
-    movies.find_one_and_update({'_id': movie_id}, {'$set': {'mean_rating': mean}})
+    mean=sum/a.ratings.find({'movie_id':movie_id}).count()
+    a.movies.find_one_and_update({'_id': movie_id}, {'$set': {'mean_rating': mean}})
 
 def update_similarity_users(user_id):
-    global users, movies, ratings
-    user_cursor=users.find()
     data_dict={}
     # for  in movies.find():
     #     data_dict[movie['_id']]={}
@@ -92,9 +77,9 @@ def update_similarity_users(user_id):
     # print(df.mean(axis=1))
     # df.to_csv('before.csv')
     # ndf=df.sub(df.mean(axis=1), axis=0)
-    for user in users.find():
+    for user in a.users.find():
         data_dict[user['_id']]={}
-    for rating in ratings.find():
+    for rating in a.ratings.find():
         data_dict[rating['user_id']][rating['movie_id']]=rating['rating']
     df=pd.DataFrame(data_dict)
     ndf=df.sub(df.mean(axis=0), axis=1)
@@ -102,7 +87,7 @@ def update_similarity_users(user_id):
 
     ndf=ndf.fillna(0)
     user_1=ndf[user_id].values
-    for user in users.find():
+    for user in a.users.find():
         if user['_id']==user_id:
             None
         else:
@@ -116,20 +101,19 @@ def update_similarity_users(user_id):
             else:
                 cosine=dot_product/((norm_1)*(norm_2))
             #print('after cosine', cosine)
-            users.find_one_and_update({'_id': user['_id']}, {'$set': {'similarity.'+users.find_one({'_id':user_id})['username']: cosine}})
+            a.users.find_one_and_update({'_id': user['_id']}, {'$set': {'similarity.'+a.users.find_one({'_id':user_id})['username']: cosine}})
             #print(user['username'])
-            users.find_one_and_update({'_id': user_id}, {'$set': {'similarity.'+user['username']: float(cosine)}}, upsert=True)
+            a.users.find_one_and_update({'_id': user_id}, {'$set': {'similarity.'+user['username']: float(cosine)}}, upsert=True)
     return(ndf, df)
 
 def u2_collab(n, user_id):
-    global users, movies, ratings
-    user_a=users.find_one({'_id':user_id})
+    user_a=a.users.find_one({'_id':user_id})
     print('21')
     try:
         similarity_dict=user_a['similarity']
     except:
         update_similarity_users(user_id)
-        user_a=users.find_one({'_id':user_id})
+        user_a=a.users.find_one({'_id':user_id})
         similarity_dict=user_a['similarity']
     print('22')
     users_to_consider=[]
@@ -140,7 +124,7 @@ def u2_collab(n, user_id):
             users_to_consider.append([similarity_dict[user_2], user_2])
     users_to_consider.sort(reverse=True)
     for user_2_ls in users_to_consider[:5]:
-        for rating in ratings.find({'user_id':users.find_one({'username':user_2_ls[1]}, {'_id':1})['_id']}, {'movie_id':1}):
+        for rating in a.ratings.find({'user_id':a.users.find_one({'username':user_2_ls[1]}, {'_id':1})['_id']}, {'movie_id':1}):
             if not ([None, rating['movie_id']] in movies_to_consider):
                 movies_to_consider.append([None, rating['movie_id']])
     to_ret=[]
@@ -154,9 +138,9 @@ def u2_collab(n, user_id):
         for user_ls in users_to_consider:
             similarity=similarity_dict[user_ls[1]]
             sum_weights=sum_weights+similarity
-            user_obj=users.find_one({'username':user_ls[1]}, {'user_id':1, 'mean_rating':1})
+            user_obj=a.users.find_one({'username':user_ls[1]}, {'user_id':1, 'mean_rating':1})
             try:
-                bias=bias+similarity*(ratings.find_one({'user_id':user_obj['_id'], 'movie_id':movie_id}, {'rating':1, '_id':False})['rating']-user_obj['mean_rating'])
+                bias=bias+similarity*(a.ratings.find_one({'user_id':user_obj['_id'], 'movie_id':movie_id}, {'rating':1, '_id':False})['rating']-user_obj['mean_rating'])
             except:
                 None
         #movie_ls[0]=bias/sum_weights + mean
@@ -167,10 +151,9 @@ def u2_collab(n, user_id):
     return(to_ret[:n])
 
 def recom_parse(lis):
-    global users, movies, ratings
     to_ret=[]
     for i in lis:
-        dict=movies.find_one({'_id':i[1]})
+        dict=a.movies.find_one({'_id':i[1]})
         to_add={'title':dict['title'], \
                 'year_of_release':dict['year_of_release'], \
                 'license':dict['license'], \
@@ -185,19 +168,20 @@ def recom_parse(lis):
     return(to_ret)
 
 def rand_movies_for_rating(n, user_id):
+    global a
     l=[]
-
-    a=ratings.find({'user_id':{'$ne':user_id}})
+    z=a.ratings.find({'user_id':{'$ne':user_id}})
     for i in range(n//2):
-        l.append(a[randint(0,a.count()-1)]['movie_id'])
+        l.append(z[randint(0,z.count()-1)]['movie_id'])
     return(l)
 
 def random_movies(n, username):
+    global a
     to_ret=[]
-    user=users.find_one({'username':username})
+    user=a.users.find_one({'username':username})
     lis=rand_movies_for_rating(n, user['_id'])
     for l in lis:
-        movie_obj=movies.find_one({'_id':l})
+        movie_obj=a.movies.find_one({'_id':l})
         to_add={'id':movie_obj['_id'],
                 'title':movie_obj['title'], \
                 'genres':movie_obj['genres'], \
@@ -212,8 +196,8 @@ def random_movies(n, username):
         else:
             to_ret.append(to_add)
     for i in range(n//2):
-        movie_obj=movies.find({}).skip(randint(0,4999)).next()
-        if ratings.find({'movie_id':movie_obj['_id'], 'user_id':user['_id']}).count()>0:
+        movie_obj=a.movies.find({}).skip(randint(0,4999)).next()
+        if a.ratings.find({'movie_id':movie_obj['_id'], 'user_id':user['_id']}).count()>0:
             None
         else:
             to_add={'id':movie_obj['_id'],
@@ -233,7 +217,7 @@ def random_movies(n, username):
 
 def process_ratings(form_input):
     #print(form_input['username'])
-    user_id=users.find_one({'username':form_input['username']})['_id']
+    user_id=a.users.find_one({'username':form_input['username']})['_id']
     #print(user_id)
     no_of_ratings=0
     for rating in form_input:
@@ -250,7 +234,7 @@ def process_ratings(form_input):
 
 def recommendations(user_id):
     l1=u2_collab(10, user_id)
-    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id)
+    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id, a)
     l3=recommendations_for(10, user_id, 'i2', a)
     l2.extend(l1[:10])
     l2.extend(l3[:10])
@@ -258,8 +242,8 @@ def recommendations(user_id):
     return(l2)
 
 def username_process(username):
-    if users.find({'username':username}).count()>0:
-        user_id=users.find_one({'username':username}, {'_id':1})['_id']
+    if a.users.find({'username':username}).count()>0:
+        user_id=a.users.find_one({'username':username}, {'_id':1})['_id']
     else:
         user_id=add_user(username)
     #return(Recommendation.matrix_factorisation.recommend_user(10, user_id))
