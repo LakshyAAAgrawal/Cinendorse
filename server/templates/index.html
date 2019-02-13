@@ -9,13 +9,13 @@
   </style>
 {% endblock %}
 {% block content %}
-
+    <h1 class="text-black display-1">Cinendorse</h1>
     <h3 class="text-center text-white pt-5">Cinendorse</h3>
-    <div class="mx-auto bg-dark text-center">
+    <div class="mx-auto bg-secondary text-center rounded">
         <div id="logo-container"></div>
         <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12">
+                <div id="login-column" class="col-sm-6">
+                    <div id="login-box" class="col-sm-12">
                         <form action = "{{ url_for('login') }}" method = "post">
                             <input name="algo" value="mf" type="hidden" />
                             <div id="username">
@@ -31,6 +31,9 @@
                         </form>
                     </div>
                 </div>
+        </div>
+        <div id="footer">
+                Made by - <a href="https://github.com/LakshyAAAgrawal">Lakshya A Agrawal</a>
         </div>
     </div>
 
