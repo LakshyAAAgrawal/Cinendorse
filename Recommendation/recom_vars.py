@@ -11,11 +11,11 @@ from string import ascii_letters
 
 class recom_vars():
     def __init__(self):
-        client=MongoClient()
+        # client=MongoClient()
+        client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
         # client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
-        # client=MongoClient('mongodb://admin:mLabAdmin1000@ds129045.mlab.com:29045/deploy_2')
-        # db=client['deploy_2']
-        db=client['try2']
+        db=client['deploy_2']
+        # db=client['try2']
         self.movies=db['movies']
         self.ratings=db['ratings']
         self.users=db['users']
