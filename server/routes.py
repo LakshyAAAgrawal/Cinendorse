@@ -23,7 +23,7 @@ def login():
         except:
               return(render_template("index.html", error="Special Characters in username not allowed"))
         else:
-              recomm=recommendations(user_id)
+              recomm=recommendations(user_id, result['algo'])
               to_pass=recom_parse(recomm)
               rand_mov=random_movies(12, result['username'])
               return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username']))
@@ -39,7 +39,7 @@ def ratings():
       rand_mov=random_movies(15, result['username'])
       try:
           user_id=username_process(result['username'])
-          recomm=recommendations(user_id)
+          recomm=recommendations(user_id, result['algo'])
       except:
           return(render_template("index.html"))
       else:

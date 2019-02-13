@@ -221,7 +221,7 @@ def process_ratings(form_input):
     #print(user_id)
     no_of_ratings=0
     for rating in form_input:
-        if(rating=='username'):
+        if(rating=='username' or rating=='algo'):
             None
         else:
             if(form_input[rating]=='Null'):
@@ -232,13 +232,16 @@ def process_ratings(form_input):
     Recommendation.matrix_factorisation.train_model(a)
     return(no_of_ratings)
 
-def recommendations(user_id):
-    l1=u2_collab(10, user_id)
-    l2=Recommendation.matrix_factorisation.recommend_user(10, user_id, a)
-    l3=recommendations_for(10, user_id, 'i2', a)
-    l2.extend(l1[:10])
-    l2.extend(l3[:10])
-    l2.sort(reverse=True)
+def recommendations(user_id, algo):
+    if algo=='u2':
+        l2=u2_collab(30, user_id)
+    elif algo=='mf':
+        l2=Recommendation.matrix_factorisation.recommend_user(30, user_id, a)
+    elif algo=='i2':
+        l2=recommendations_for(30, user_id, 'i2', a)
+    # l2.extend(l1[:10])
+    # l2.extend(l3[:10])
+    # l2.sort(reverse=True)
     return(l2)
 
 def username_process(username):

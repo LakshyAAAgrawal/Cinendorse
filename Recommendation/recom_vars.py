@@ -9,10 +9,6 @@ import pickle
 from random import randint
 from string import ascii_letters
 
-
-
-
-
 class recom_vars():
     def __init__(self):
         # client=MongoClient()

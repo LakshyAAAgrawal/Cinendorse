@@ -18,7 +18,7 @@
       <li class="active"><a data-toggle="pill" href="#home">Rate Movies</a></li>
       <li><a data-toggle="pill" href="#menu1">Recommendations</a></li>
     </ul>
-
+<form action="{{ url_for('ratings') }}" method = "post">
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <center><h2>Rate Movies</h2></center>
@@ -26,7 +26,7 @@
             {% if msg_success %}
                  <p><font color="green">{{msg_success}}</font></p>
             {% endif %}
-            <form action="{{ url_for('ratings') }}" method = "post">
+            <!-- <form action="{{ url_for('ratings') }}" method = "post"> -->
                 <input name="username" value={{username}} type="hidden" />
                 <!--
                 <table border = 0>
@@ -84,7 +84,7 @@
                 <!--
                 </table>
                 -->
-            </form>
+            <!-- </form> -->
         </div>
         <div id="menu1" class="tab-pane fade">
             <center><h2>Your recommendations</h2></center>
@@ -95,6 +95,18 @@
                     <!-- <th>Movie</th> -->
                     <!-- <th>Synopsis</th> -->
                 <!-- </tr> -->
+                <div class="row">
+                    <div class="col">
+                        <!-- <form> -->
+                        <select name="algo" selected="0" class="form-control btn-primary">
+                            <option value="mf" name="algo" selected="selected">Matrix Factorisation</option>
+                            <option value="i2" name="algo">User-User Collaborative Filtering</option>
+                            <option value="u2" name="algo">Item Item Collaborative Filtering</option>
+                        </select>
+                        <input type="submit" value="Submit" class="btn btn-primary btn-lg" />
+
+                        </div>
+                    </div>
                 <div class="row">
                {% for movie in result %}
                   <!-- <tr> -->
@@ -109,7 +121,7 @@
                {% endfor %}
                </div>
             <!-- </table> -->
-        </div>
+        </div></form>
     </div>
 </div>
 {% endblock %}
