@@ -162,7 +162,8 @@ def recom_parse(lis):
                 'synpsis':dict['synpsis'], \
                 'directors':dict['directors'], \
                 'cast': dict['cast'],\
-                'thumbnail_url':dict['thumbnail_url'] \
+                'thumbnail_url':dict['thumbnail_url'], \
+                'imdb_rating':dict['imdb_rating']
             }
         to_ret.append(to_add)
     return(to_ret)
@@ -189,7 +190,8 @@ def random_movies(n, username):
                 'directors':movie_obj['directors'], \
                 'cast': movie_obj['cast'],\
                 'thumbnail_url':movie_obj['thumbnail_url'], \
-                'year_of_release':movie_obj['year_of_release']
+                'year_of_release':movie_obj['year_of_release'], \
+                'imdb_rating':movie_obj['imdb_rating']
             }
         if to_add in to_ret:
             None
