@@ -142,24 +142,3 @@ def rating_for(n, user_id, a):
         ratings_l.append([p_user.dot(q), movie['_id']])
     ratings_l.sort(reverse=True)
     return(ratings_l[:n])
-
-
-
-
-def recommend_user(n, user_id, a):
-    '''
-    global users, movies, ratings, exp_ratings_factorisation, movie_latent_vector, user_latent_vector
-    ratings_l=[]
-    try:
-        p=pickle.loads(user_latent_vector.find({'user_id':user_id})[0]['latent_vector'])
-    except:
-        update_exp_ratings_factorisation()
-        p=pickle.loads(user_latent_vector.find({'user_id':user_id})[0]['latent_vector'])
-    for movie in movies.find():
-        q=pickle.loads(movie_latent_vector.find({'movie_id':movie['_id']})[0]['latent_vector'])
-        ratings_l.append([p.dot(q), movie['_id']])
-    ratings_l.sort(reverse=True)
-    print(ratings_l)
-    return(ratings_l[:n])
-    '''
-    return(rating_for(n, user_id, a))

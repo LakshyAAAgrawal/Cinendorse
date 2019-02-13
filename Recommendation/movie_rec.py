@@ -236,7 +236,7 @@ def recommendations(user_id, algo):
     if algo=='u2':
         l2=u2_collab(30, user_id)
     elif algo=='mf':
-        l2=Recommendation.matrix_factorisation.recommend_user(30, user_id, a)
+        l2=Recommendation.matrix_factorisation.rating_for(30, user_id, a)
     elif algo=='i2':
         l2=recommendations_for(30, user_id, 'i2', a)
     # l2.extend(l1[:10])
