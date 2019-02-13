@@ -26,7 +26,7 @@ def login():
               recomm=recommendations(user_id, result['algo'])
               to_pass=recom_parse(recomm)
               rand_mov=random_movies(12, result['username'])
-              return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username']))
+              return(render_template('recom_display.html', result=to_pass, random_movies=rand_mov, username=result['username'], algo=result['algo']))
     else:
         return('Not Supported')
 
