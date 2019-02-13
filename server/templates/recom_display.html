@@ -99,9 +99,9 @@
                     <div class="col">
                         <!-- <form> -->
                         <select name="algo" selected="0" class="form-control btn-primary">
-                            <option value="mf" name="algo" {% if algo is defined %}{% if algo=='mf' %}selected="selected"{% endif %}{% endif %}>Matrix Factorisation</option>
-                            <option value="u2" name="algo" {% if algo is defined %}{% if algo=='u2' %}selected="selected"{% endif %}{% endif %}>User-User Collaborative Filtering</option>
-                            <option value="i2" name="algo" {% if algo is defined %}{% if algo=='i2' %}selected="selected"{% endif %}{% endif %}>Item Item Collaborative Filtering</option>
+                            <option value="mf" name="algo" {% if algo %}{% if algo=="mf" %}selected="selected"{% endif %}{% endif %}>Matrix Factorisation</option>
+                            <option value="u2" name="algo" {% if algo %}{% if algo=="u2" %}selected="selected"{% endif %}{% endif %}>User-User Collaborative Filtering</option>
+                            <option value="i2" name="algo" {% if algo %}{% if algo=="i2" %}selected="selected"{% endif %}{% endif %}>Item Item Collaborative Filtering</option>
                         </select>
                         <input type="submit" value="Submit" class="btn btn-primary btn-lg" />
                         </div>
