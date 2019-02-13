@@ -1,10 +1,7 @@
 # Cinendorse
 Cinendorse gives movie recommendations to the users based on data collected from them in the form of ratings to movies from a database of 5000 movies. It takes into consideration 3 different algorithms to give recommendations. It is hosted in a Docker container in Heroku. (Docker container created from ![Dockerfile](Dockerfile)). The website is hosted at [Cinendorse](https://cinendorse.herokuapp.com "Cinendorse")
 
-The Database is hosted on an mLAb server at [mLab-deploy_2](https://mlab.com/databases/deploy_2)
-Please use the credentials:
-Username : Review
-Password : reviewCom1000
+The Database is hosted on an mLAb server at [mLab-deploy_2](https://mlab.com/databases/deploy_2). The collection files are present in ![MongoDB](MongoDB/)
 
 ## Data Collection
 For the purpose of collecting data on movies, I wrote the ![main.py](Data_Scraping/main.py) script, which takes an integer i as input, and scrapes data for i pages from the IMDB advanced search pages, each having 250 movie, which display all the details about the movies in a single page. I chose to scrape data for the "Most Rated" movies, and not "Highly Rated Movies" so as to ensure that my database does get almost all relatable movies to the target userbase around me.
