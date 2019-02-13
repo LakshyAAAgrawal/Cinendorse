@@ -9,23 +9,31 @@
   </style>
 {% endblock %}
 {% block content %}
-    <form action = "{{ url_for('login') }}" method = "post">
-        <input name="algo" value="mf" type="hidden" />
-        <div id="username">
-            <table>
-                <tr>
-                    <td>
-                <p>Enter Name:</p>
-                </td>
-                <td>
-                <p><input type = "text" name = "username" /></p>
-                </td>
-                <tr><td></td><td colspan="3"
-                <center><p><input type = "submit" value = "submit" /></p></center></td>
-                </tr>
-            </table>
+
+    <h3 class="text-center text-white pt-5">Cinendorse</h3>
+    <div class="mx-auto bg-dark text-center">
+        <div id="logo-container"></div>
+        <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form action = "{{ url_for('login') }}" method = "post">
+                            <input name="algo" value="mf" type="hidden" />
+                            <div id="username">
+                                <div class="form-group">
+                                          <label for="username" class="text-info">Username</label><br>
+                                          <input type = "text" name = "username" id="username" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <!-- <p><input type = "submit" value = "submit" /></p> -->
+                                    <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
         </div>
-    </form>
+    </div>
+
     {% if error %}
         <center><p><font color="red">{{error}}</font></p></center>
     {% endif %}
