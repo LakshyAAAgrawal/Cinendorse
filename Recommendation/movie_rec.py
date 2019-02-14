@@ -241,9 +241,12 @@ def recommendations(user_id, algo):
         l2=Recommendation.matrix_factorisation.rating_for(30, user_id, a)
     elif algo=='i2':
         l2=recommendations_for(30, user_id, 'i2', a)
+    # l1=u2_collab(10, user_id)
+    # l2=Recommendation.matrix_factorisation.rating_for(10, user_id, a)
+    # l3=recommendations_for(10, user_id, 'i2', a)
     # l2.extend(l1[:10])
     # l2.extend(l3[:10])
-    # l2.sort(reverse=True)
+    l2.sort(reverse=True)
     return(l2)
 
 def username_process(username):

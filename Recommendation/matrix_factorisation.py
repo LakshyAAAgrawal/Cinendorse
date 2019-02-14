@@ -20,7 +20,7 @@ k=10
 def matrix_factorisation(matrix, no_of_users, no_of_movies, rating_indices, U=None, M=None):
     n=no_of_users
     m=no_of_movies
-    epochs=10
+    epochs=10000
     alpha=0.001
     if U is None:
         U=np.random.random((n, k))
