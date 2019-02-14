@@ -19,6 +19,7 @@ def login():
         result = request.form
         # print('0', datetime.datetime.now().minute, datetime.datetime.now().second)
         try:
+            #This processes the username and returns the user_id of the active user.
             user_id=username_process(result['username'])
         except:
               return(render_template("index.html", error="Special Characters in username not allowed"))

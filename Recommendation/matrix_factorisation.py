@@ -18,26 +18,34 @@ from bson.binary import Binary
 # np_arrays=db['np_arrays']
 k=10
 def matrix_factorisation(matrix, no_of_users, no_of_movies, rating_indices, U=None, M=None):
+    '''
+        This function performs the gradient descent for the given data. It is dependent on a modified version of the funk SVD.
+    '''
     n=no_of_users
     m=no_of_movies
-    epochs=10000
-    alpha=0.001
-    if U is None:
+    epochs=20
+    alpha=0.0001
+    if U is None: # Rando
         U=np.random.random((n, k))
     if M is None:
         M=np.random.random((m, k))
-    for _ in range(epochs):
+    for i in range(epochs):
+        sq_error=0
         for r_index in rating_indices:
             p=U[r_index[0]]
             q=M[r_index[1]]
             to_change=matrix[r_index[0], r_index[1]]-p.dot(q)
-            p=p+alpha*to_change*q
-            q=q+alpha*to_change*p
+            sq_error=sq_error+pow(to_change, 2)
+            U[r_index[0]]=p+alpha*to_change*q
+            M[r_index[1]]=q+alpha*to_change*p
+        print('Error after', i, 'epochs is', sq_error)
     return(U, M)
 
 def train_model(recom_vars_obj):
-    #movie_index_dict={}
-    #user_index_dict={}
+    '''
+    This function takes the variable holder class as input and then loads the data for both the latent matrices from the database. Verifies for each user, and then, if any new user is found, adds rows and columns for them in the corresponding U and M matrices. The values are picked from a Normal Gaussian centered at 0 with S.D. 1
+    After loading of the data, it calls the gradient descent function matrix_factorisation, which returns the updated matrices U and M. It then loads the updated values into the database.
+    '''
     movie_counter=0
     if recom_vars_obj.np_arrays.find({'name':'U'}).count()>0:
         U=pickle.loads(recom_vars_obj.np_arrays.find({'name':'U'}).next()['matrix'])
@@ -90,44 +98,10 @@ def train_model(recom_vars_obj):
     recom_vars_obj.np_arrays.update({'name':'M'}, {'$set':{'matrix':Binary(pickle.dumps(new_M))}}, upsert=True)
     recom_vars_obj.np_arrays.update({'name':'M_len'}, {'$set':{'value':len(M)}}, upsert=True)
 
-'''
-#def update_exp_ratings_factorisation():
-def rating_for(n, user_id):
-    global users, movies, ratings, exp_ratings_factorisation
-    movie_index_dict={}
-    user_index_dict={}
-    movie_counter=0
-    for movie in movies.find():
-        movie_index_dict[movie['_id']]=movie_counter
-        movie_counter+=1
-    user_counter=0
-    for user in users.find():
-        user_index_dict[user['_id']]=user_counter
-        user_counter+=1
-    ratings_array=np.empty((user_counter, movie_counter))
-    ratings_array.fill(np.nan)
-    rating_indices=[]
-    for rating in ratings.find():
-        rating_indices.append([user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]])
-        ratings_array[user_index_dict[rating['user_id']], movie_index_dict[rating['movie_id']]]=rating['rating']
-
-    U, M=matrix_factorisation(ratings_array, user_counter, movie_counter, rating_indices)
-    p_user=U[user_index_dict[user_id]]
-    ratings_l=[]
-    for movie in movies.find():
-        q=M[movie_index_dict[movie['_id']]]
-        ratings_l.append([p_user.dot(q), movie['_id']])
-    ratings_l.sort(reverse=True)
-    return(ratings_l[:n])
-    \'''
-    for movie in movie_index_dict:
-        movie_latent_vector.update({'movie_id':movie}, {'movie_id':movie, 'latent_vector':Binary(pickle.dumps(M[movie_index_dict[movie]]))}, upsert=True)
-    for user in user_index_dict:
-        user_latent_vector.update({'user_id':user}, {'user_id':user, 'latent_vector':Binary(pickle.dumps(U[user_index_dict[user]]))}, upsert=True)
-    \'''
-'''
-
 def rating_for(n, user_id, a):
+    '''
+        This function returns a list of n movies expected to be most highly rated by the users based on predictions from matrix factorisation.
+    '''
     if a.np_arrays.find({'name':'U'}).count()>0:
         U=pickle.loads(a.np_arrays.find({'name':'U'})[0]['matrix'])
         M=pickle.loads(a.np_arrays.find({'name':'M'})[0]['matrix'])
