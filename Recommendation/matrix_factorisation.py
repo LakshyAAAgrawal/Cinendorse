@@ -23,8 +23,8 @@ def matrix_factorisation(matrix, no_of_users, no_of_movies, rating_indices, U=No
     '''
     n=no_of_users
     m=no_of_movies
-    epochs=20
-    alpha=0.0001
+    epochs=40
+    alpha=0.001
     if U is None: # Rando
         U=np.random.random((n, k))
     if M is None:
@@ -39,6 +39,12 @@ def matrix_factorisation(matrix, no_of_users, no_of_movies, rating_indices, U=No
             U[r_index[0]]=p+alpha*to_change*q
             M[r_index[1]]=q+alpha*to_change*p
         print('Error after', i, 'epochs is', sq_error)
+        if sq_error>0.001:
+            alpha=0.1
+        if sq_error<0.001 and sq_error>0.00001:
+            alpha=0.01
+        if sq_error<0.00001:
+            alpha=0.001
     return(U, M)
 
 def train_model(recom_vars_obj):
@@ -111,8 +117,8 @@ def rating_for(n, user_id, a):
         M=pickle.loads(a.np_arrays.find({'name':'M'})[0]['matrix'])
     p_user=U[a.users.find({'_id':user_id}).next()['matrix_index']]
     ratings_l=[]
-    for movie in a.movies.find():
-        q=M[movie['matrix_index']]
-        ratings_l.append([p_user.dot(q), movie['_id']])
+    for movie_id in a.ratings.distinct('movie_id', {'user_id':{'$ne':user_id}}):
+        q=M[a.movie_index_dict[movie_id]]
+        ratings_l.append([p_user.dot(q), movie_id])
     ratings_l.sort(reverse=True)
     return(ratings_l[:n])
