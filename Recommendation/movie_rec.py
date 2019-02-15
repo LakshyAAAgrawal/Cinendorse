@@ -43,7 +43,7 @@ def add_rating(movie_id, user_id, rating):
     to_enter={'user_id':user_id, 'movie_id': movie_id, 'rating':rating}
     #print(to_enter)
     a.ratings.insert_one(to_enter)
-    #print(rating,'inserted for', movies.find_one({'_id':movie_id})['title'], 'by', users.find_one({'_id':user_id})['username'])
+    # print(rating,'inserted for', a.movies.find_one({'_id':movie_id})['title'], 'by', a.users.find_one({'_id':user_id})['username'])
     update_ratings_average(user_id)
     update_similarity_users(user_id)
 

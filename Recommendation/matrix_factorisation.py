@@ -117,7 +117,10 @@ def rating_for(n, user_id, a):
         M=pickle.loads(a.np_arrays.find({'name':'M'})[0]['matrix'])
     p_user=U[a.users.find({'_id':user_id}).next()['matrix_index']]
     ratings_l=[]
-    for movie_id in a.ratings.distinct('movie_id', {'user_id':{'$ne':user_id}}):
+    # print('username', a.users.find_one({'_id':user_id})['username'])
+    # print('username', a.users.find({'_id':user_id})[0]['username'])
+    # for movie_id in a.ratings.distinct('movie_id', {'user_id':{'$ne':user_id}}):
+    for movie_id in a.ratings.find({'user_id':{'$nin':[user_id]}}).distinct('movie_id'):
         q=M[a.movie_index_dict[movie_id]]
         ratings_l.append([p_user.dot(q), movie_id])
     ratings_l.sort(reverse=True)
