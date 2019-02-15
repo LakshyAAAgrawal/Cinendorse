@@ -24,7 +24,7 @@ def matrix_factorisation(matrix, no_of_users, no_of_movies, rating_indices, U=No
     n=no_of_users
     m=no_of_movies
     epochs=40
-    alpha=0.001
+    alpha=0.00001
     if U is None: # Rando
         U=np.random.random((n, k))
     if M is None:
@@ -120,7 +120,8 @@ def rating_for(n, user_id, a):
     # print('username', a.users.find_one({'_id':user_id})['username'])
     # print('username', a.users.find({'_id':user_id})[0]['username'])
     # for movie_id in a.ratings.distinct('movie_id', {'user_id':{'$ne':user_id}}):
-    for movie_id in a.ratings.find({'user_id':{'$nin':[user_id]}}).distinct('movie_id'):
+    not_to_take=a.ratings.distinct('movie_id', {'user_id':user_id})
+    for movie_id in a.ratings.find({'movie_id':{'$nin':not_to_take}}).distinct('movie_id'):
         q=M[a.movie_index_dict[movie_id]]
         ratings_l.append([p_user.dot(q), movie_id])
     ratings_l.sort(reverse=True)

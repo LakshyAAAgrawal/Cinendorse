@@ -35,7 +35,9 @@ def rating_for(user_id, movie_id, arr_1, algorithm='u2_collab', a=None):
 def recommendations_for(n, user_id, algorithm='i2', a=None):
     rating_list=[]
     arr_1=np.nan_to_num(a.ratings_array-np.nanmean(a.ratings_array, axis=0))
-    for m_id in a.ratings.distinct('movie_id', {'user_id':{'$ne':user_id}}):
+
+    not_to_take=a.ratings.distinct('movie_id', {'user_id':user_id})
+    for m_id in a.ratings.find({'movie_id':{'$nin':not_to_take}}).distinct('movie_id'):
         rating_list.append([rating_for(user_id, m_id, arr_1, algorithm='i2_collab',a=a), m_id])
     rating_list.sort(reverse=True)
     return(rating_list[:n])
