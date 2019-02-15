@@ -15,3 +15,5 @@ https://www.analyticsvidhya.com/blog/2018/06/comprehensive-guide-recommendation-
 https://medium.com/@james_aka_yale/the-4-recommendation-engines-that-can-predict-your-movie-tastes-bbec857b8223
 https://endymecy.gitbooks.io/spark-ml-source-analysis/content/%E6%8E%A8%E8%8D%90/papers/Large-scale%20Parallel%20Collaborative%20Filtering%20the%20Netflix%20Prize.pdf
 https://towardsdatascience.com/collaborative-filtering-based-recommendation-systems-exemplified-ecbffe1c20b1
+
+I also took guidance from Vishaal of the batch of 2020, who was also a TA for Linear Algebra, and thus, clarified doubts regarding the algorithms.
