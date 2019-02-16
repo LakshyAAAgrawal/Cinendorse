@@ -52,3 +52,4 @@ I wanted to use a gradient descent algorithm to find the weights to be given to 
   <img src="server/static/calc.jpg" width="350" title="Calculations for finding weights of the output of algorithms">
 </p>
 
+During testing, returning the result from best of three was increasing the load time by about 10 seconds. So I chose to rather give the user an interface to select the algorithm for which to return the result.
