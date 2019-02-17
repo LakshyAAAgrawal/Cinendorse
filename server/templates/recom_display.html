@@ -10,9 +10,9 @@
 {% endblock %}
 {% block content %}
 <div align="right">
- <a href="{{ url_for('index')}}">Sign Out</a>
+ <a class="text-dark"href="{{ url_for('index')}}">Sign Out</a>
 </div>
-<center><h1 class>Cinendorse</h1></center>
+<center><h1 class="text-dark">Cinendorse</h1></center>
 <div class="container bg-dark text-white">
     <ul class="nav nav-pills">
       <li class="active"><a data-toggle="pill" href="#home">Rate Movies</a></li>
@@ -22,7 +22,7 @@
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <center><h2>Rate Movies</h2></center>
-            Welcome to Cinendorse. Get the best movie recommendations just by rating the movies you have watched. To ensure good recommendations, please rate only those movies which you have watched, and rate them based on your own personal experience, rather than its common public perception. Pressing Submit will submit the ratings given(and even if not given) and load a new list of movies. Hover over the movie posters for more info.. You can see your recommendations on the "Recommendation" Tab.
+            Please rate only those movies which you have watched. Pressing Submit will submit the ratings given(and even if not given) and load a new list of movies.<br/> Hover over the movie posters for more info.. You can see your recommendations on the "Recommendation" Tab.
             {% if msg_success %}
                  <p><font color="green">{{msg_success}}</font></p>
             {% endif %}
@@ -37,7 +37,7 @@
                         <th><center>Rating</center></th>
                     </tr>
                     -->
-                    <div class="row">
+                    <div class="row justify-content-center align-items-center" style="grid-template-columns: repeat( auto-fit, minmax(300px, 1fr) );">
                    {% for movie in random_movies %}
                    <!--
                       <tr>
@@ -46,15 +46,20 @@
                             <td><center>{{movie.title}}</center></td>
                             <td><center>{{movie.synpsis}}</center></td>
                             <td> -->
-                            <div class="col">
-                                <div class="row">
+                            <div class="col-sm-3" style="margin:5px;">
+                                <div class="row"><div class="col-sm-12"><center>
                                     <img src="{{movie.thumbnail_url}}" title="IMDb Rating : {{movie.imdb_rating}}.. Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded">
-
+</center></div>
                                 </div>
                                 <div class="row">
-                                    <center>{{movie.title}} ({{movie.year_of_release}})</center>
+                                    <div class="col">
+                                    <center style="overflow-x: scroll;
+    white-space: nowrap;
+    width: 50px; width:100%;">{{movie.title}} ({{movie.year_of_release}})</center>
+                                    </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col">
                                     <div class="ratings">
                                         <select name="{{movie.id}}" selected="0" class="form-control btn-primary">
                                             <option value="Null" name="{{movie.id}}" selected="selected">Rate</option>
@@ -68,7 +73,7 @@
                                             <option value="4.5" name="{{movie.id}}">4.5</option>
                                             <option value="5" name="{{movie.id}}">5</option>
                                         </select>
-                                </div>
+                                </div></div>
                             </div>
                             </div>
                             <!-- </td> -->
@@ -89,8 +94,8 @@
         <div id="menu1" class="tab-pane fade">
             <center><h2>Your recommendations</h2></center>
             Here you can see the movies recommended for you. Rate as many movies as possible( Psst., only those that you have watched ) to get better and better recommendations!!
-
-            Please choose the Algorithm to display results from
+<br/>
+            Please choose the filter to display results from
             <!-- <table border = 0> -->
                 <!-- <tr> -->
                     <!-- <th>Cover</th> -->
@@ -108,16 +113,17 @@
                         <!-- <input type="submit" value="Submit" class="btn btn-primary btn-lg" /> -->
                         </div>
                     </div>
-                <div class="row">
+                <div class="row justify-content-center align-items-center" style="grid-template-columns: repeat( auto-fit, minmax(300px, 1fr) );">
                {% for movie in result %}
                   <!-- <tr> -->
                         <!-- <td><img src="{{movie.thumbnail_url}}" height=147 width=100></td> -->
                         <!-- <td>{{movie.title}}</td> -->
                         <!-- <td>{{movie.synpsis}}</td> -->
                   <!-- </tr> -->
-                  <div class="col"><div class="row">
-                      <img src="{{movie.thumbnail_url}}" title="IMDb Rating : {{movie.imdb_rating}}..  Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded"></div><div class="row">
-                      <center>{{movie.title}} ({{movie.year_of_release}})</center></div>
+                  <div class="col-sm-3" style="margin:5px;"><div class="row"><div class="col-sm-12"><center>
+                      <img src="{{movie.thumbnail_url}}" title="IMDb Rating : {{movie.imdb_rating}}..  Synopsis : {{movie.synpsis}}... Directed By : {{movie.directors}} .. Cast : {{movie.cast}}" class="img-rounded"></center></div></div>
+                      <div class="row"><div class="col">
+                      <center style="overflow-x: scroll;white-space: nowrap;width: 50px; width:100%;">{{movie.title}} ({{movie.year_of_release}})</center></div></div>
                     </div>
                {% endfor %}
                </div>
@@ -125,7 +131,6 @@
         </div></form>
         <div id="footer">
                 Website Made by - <a href="https://github.com/LakshyAAAgrawal">Lakshya A Agrawal</a>
-                Background Credit - Bhavya Chopra
         </div>
     </div>
 </div>
