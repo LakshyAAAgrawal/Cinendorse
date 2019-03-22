@@ -17,10 +17,31 @@ When opened, the user is greeted with a form to create a username. I chose not t
 
 In another tab, the user can see the movies recommended to them based on the algorithm they choose(through a drop down present). As the user submits more ratings, the recommendations change, and gradually get better.
 
-To run the web server, change present working directory to the project root, then:
+To run the web server, clone the repository, 
+```
+git clone https://github.com/LakshyAAAgrawal/Cinendorse.git
+```
+create a python virtual environment and activate it:
+```
+python3 -m venv Cinendorse-venv
+source Cinendorse-ven/bin/activate
+cd Cinendorse/
+```
+Install the required packages:
+```
+pip3 install -r requirements.txt
+```
+to run the web server:
 ```
     export FLASK_APP=server
     flask run -h 0.0.0.0
+```
+Alternatively, to run the server in a Docker container:
+```
+docker build ./
+
+#5000 is the default port number, you could choose alternatively
+docker run -p 5000:5000 -e PORT=5000 222ea9d0cedf
 ```
 ## Algorithms
 ### User User Collaborative Filtering
