@@ -41,7 +41,7 @@ Alternatively, to run the server in a Docker container:
 docker build ./
 
 #5000 is the default port number, you could choose alternatively
-docker run -p 5000:5000 -e PORT=5000 222ea9d0cedf
+docker run -p 5000:5000 -e PORT=5000 <docker image id>
 ```
 ## Algorithms
 ### User User Collaborative Filtering
